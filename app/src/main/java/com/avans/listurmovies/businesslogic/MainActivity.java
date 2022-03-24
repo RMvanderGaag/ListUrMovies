@@ -1,7 +1,8 @@
-package com.avans.listurmovies;
+package com.avans.listurmovies.businesslogic;
 
 import android.os.Bundle;
 
+import com.avans.listurmovies.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
