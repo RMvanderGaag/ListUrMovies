@@ -1,7 +1,6 @@
 # ListUrMovies
----
 ![Icon](https://i.imgur.com/aQSzvxm.png)
-📱 Android app for viewing/rating and reviewing movies
+#### 📱 Android app for viewing and rating movies
 
 ## Features
 
