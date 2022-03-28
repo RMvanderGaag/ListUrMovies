@@ -1,7 +1,9 @@
-package com.avans.listurmovies;
+package com.avans.listurmovies.presentation;
 
 import android.os.Bundle;
 
+import com.avans.listurmovies.R;
+import com.avans.listurmovies.dataacess.MovieRepository;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
+    private MovieRepository mMovieRepository = new MovieRepository(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mMovieRepository.getPopularMovies();
 
     }
 
