@@ -20,6 +20,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +34,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private MovieViewModel mMovieViewModel;
+    private int currentPage = 1;
+    private MovieAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +47,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final MovieAdapter adapter = new MovieAdapter(this);
+        adapter = new MovieAdapter(this);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-        mMovieViewModel.getMovies().observe(this, movieResults -> {
-            adapter.setMovies(movieResults.getResult());
-        });
+        loadMovies();
     }
 
     @Override
@@ -76,4 +77,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void loadMovies(){
+        mMovieViewModel.getMovies(currentPage).observe(this, movieResults -> {
+            adapter.setMovies(movieResults.getResult());
+        });
+    }
+
+    public void test(View view) {
+        currentPage++;
+        loadMovies();
+    }
 }

@@ -60,8 +60,8 @@ public class MovieRepository {
         }
     }
 
-    public MutableLiveData<MovieResults> getMovies() {
-        Call<MovieResults> call = mService.getPopularMovies(mContext.getResources().getString(R.string.api_key), LANGUAGE, 1);
+    public MutableLiveData<MovieResults> getMovies(int page) {
+        Call<MovieResults> call = mService.getPopularMovies(mContext.getResources().getString(R.string.api_key), LANGUAGE, page);
         call.enqueue(new Callback<MovieResults>() {
             @Override
             public void onResponse(Call<MovieResults> call, Response<MovieResults> response) {

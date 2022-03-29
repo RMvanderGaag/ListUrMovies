@@ -1,23 +1,30 @@
 package com.avans.listurmovies.presentation;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.domain.Movie;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private final LayoutInflater mInflater;
-    private List<Movie> mMovies; // Cached copy of words
+    private List<Movie> mMovies;
+    private Context mContext;
 
-    public MovieAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    public MovieAdapter(Context context) {
+        this.mInflater = LayoutInflater.from(context);
+        this.mContext = context;
+    }
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -27,13 +34,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        if (mMovies != null) {
             Movie current = mMovies.get(position);
-            holder.movieItemView.setText(current.getTitle());
-        } else {
-            // Covers the case of data not being ready yet.
-            holder.movieItemView.setText("No Movie");
-        }
+            holder.bindTo(current);
     }
 
     void setMovies(List<Movie> words){
@@ -51,11 +53,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
-        private final TextView movieItemView;
+        private TextView mMovieTitle;
+        private ImageView mMovieImage;
+        private TextView mMovieRating;
 
         private MovieViewHolder(View itemView) {
             super(itemView);
-            movieItemView = itemView.findViewById(R.id.textView);
+            mMovieTitle = itemView.findViewById(R.id.movieTitle);
+            mMovieImage = itemView.findViewById(R.id.movieImage);
+            mMovieRating = itemView.findViewById(R.id.movieRating);
+        }
+
+        public void bindTo(Movie currentMovie) {
+            mMovieTitle.setText(currentMovie.getTitle());
+            Glide.with(mContext).load(mContext.getString(R.string.movieURL) + currentMovie.getPoster_path()).into(mMovieImage);
+            mMovieRating.setText("Rating: " + currentMovie.getVote_average());
         }
     }
 }
