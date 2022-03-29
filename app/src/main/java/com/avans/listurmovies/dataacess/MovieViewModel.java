@@ -20,8 +20,8 @@ public class MovieViewModel extends AndroidViewModel {
         mRepository = new MovieRepository(application);
     }
 
-    public MutableLiveData<MovieResults> getMovies() {
-        return mRepository.getMovies();
+    public MutableLiveData<MovieResults> getMovies(int page) {
+        return mRepository.getMovies(page);
     }
 
     public void insert(Movie movie) { mRepository.insert(movie); }
