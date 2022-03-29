@@ -1,4 +1,4 @@
-package com.avans.listurmovies.dataacess;
+package com.avans.listurmovies.dataacess.retrofit;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
