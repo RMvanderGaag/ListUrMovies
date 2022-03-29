@@ -26,14 +26,14 @@ public class Movie {
 
     //Votes/Popularity
     private double popularity;
-    private double vote_avarage;
+    private double vote_average;
     private int vote_count;
 
     //Other
     private boolean adult;
 
     public Movie(int id, String title, String overview, Date release_date, int[] genres, String original_language, String original_title,
-                 String poster_path, String backdrop_path, double popularity, double vote_avarage, int vote_count, boolean adult) {
+                 String poster_path, String backdrop_path, double popularity, double vote_average, int vote_count, boolean adult) {
         this.id = id;
         this.title = title;
         this.overview = overview;
@@ -44,7 +44,7 @@ public class Movie {
         this.poster_path = poster_path;
         this.backdrop_path = backdrop_path;
         this.popularity = popularity;
-        this.vote_avarage = vote_avarage;
+        this.vote_average = vote_average;
         this.vote_count = vote_count;
         this.adult = adult;
     }
@@ -89,8 +89,8 @@ public class Movie {
         return popularity;
     }
 
-    public double getVote_avarage() {
-        return vote_avarage;
+    public double getVote_average() {
+        return vote_average;
     }
 
     public int getVote_count() {
