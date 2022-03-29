@@ -12,6 +12,7 @@ public class Movie {
     private int id;
     private String title;
     private String overview;
+
     private Date release_date;
     private int[] genres;
 
