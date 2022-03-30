@@ -130,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        //Set page to 1
+        currentPage = 1;
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -138,10 +142,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         switch (id) {
-            case R.id.latest_movies:
-                filter = R.id.latest_movies;
-                loadMovies();
-                break;
             case R.id.now_playing:
                 filter = R.id.now_playing;
                 loadMovies();

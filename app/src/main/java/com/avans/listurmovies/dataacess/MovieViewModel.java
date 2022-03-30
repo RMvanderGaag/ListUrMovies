@@ -24,8 +24,6 @@ public class MovieViewModel extends AndroidViewModel {
     public MutableLiveData<MovieResults> getMovies(int page, int filter) {
         if(filter == R.id.popular_movies){
             return mRepository.getPopularMovies(page);
-        }else if(filter == R.id.latest_movies){
-            return mRepository.getLatestMovies(page);
         }else if(filter == R.id.now_playing){
             return mRepository.getNowPlayingMovies(page);
         }else if(filter == R.id.top_rated){
