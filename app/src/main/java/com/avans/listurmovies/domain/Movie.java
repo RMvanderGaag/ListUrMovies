@@ -3,10 +3,11 @@ package com.avans.listurmovies.domain;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity(tableName = "movies")
-public class Movie {
+public class Movie implements Serializable {
     //General
     @PrimaryKey
     private int id;
