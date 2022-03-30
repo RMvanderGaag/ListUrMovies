@@ -9,6 +9,7 @@ import com.avans.listurmovies.dataacess.MovieViewModel;
 import com.avans.listurmovies.domain.Movie;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
@@ -17,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private int currentPage = 1;
     private MovieAdapter adapter;
     private int filter = R.id.popular_movies;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        drawer = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         adapter = new MovieAdapter(this);
         recyclerView.setAdapter(adapter);
@@ -59,6 +70,15 @@ public class MainActivity extends AppCompatActivity {
 
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         loadMovies();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
