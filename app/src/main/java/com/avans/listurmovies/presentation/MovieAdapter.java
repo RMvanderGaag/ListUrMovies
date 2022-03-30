@@ -2,7 +2,6 @@ package com.avans.listurmovies.presentation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,8 +67,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
 
         public void bindTo(Movie currentMovie) {
+            //Title
             mMovieTitle.setText(currentMovie.getTitle());
-            Glide.with(mContext).load(mContext.getString(R.string.movieURL) + currentMovie.getPoster_path()).into(mMovieImage);
+
+            //Image
+            Glide.with(mContext).load(mContext.getString(R.string.movieURL) + currentMovie.getPoster_path())
+                    .placeholder(R.drawable.img_placeholder).error(R.drawable.img_error).into(mMovieImage);
             mMovieRating.setText("Rating: " + currentMovie.getVote_average());
         }
 
