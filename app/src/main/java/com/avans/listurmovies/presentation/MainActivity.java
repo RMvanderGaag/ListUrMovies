@@ -79,12 +79,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadMovies(){
         mMovieViewModel.getMovies(currentPage).observe(this, movieResults -> {
+            if(movieResults == null) return;
             adapter.setMovies(movieResults.getResult());
         });
     }
 
-    public void test(View view) {
+    public void nextMovies(View view) {
         currentPage++;
+        loadMovies();
+    }
+
+    public void previousMovies(View view) {
+        if(currentPage == 1) return;
+        currentPage--;
         loadMovies();
     }
 }
