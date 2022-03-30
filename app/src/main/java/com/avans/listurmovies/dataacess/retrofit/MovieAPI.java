@@ -17,7 +17,8 @@ public interface MovieAPI {
     @GET("movie/latest")
     Call<MovieResults> getLatestMovies(
             @Query("api_key") String api_key,
-            @Query("language") String language
+            @Query("language") String language,
+            @Query("page") int page
     );
 
     @GET("movie/now_playing")

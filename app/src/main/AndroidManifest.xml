@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ListUrMovies">
         <activity
+            android:name=".presentation.MovieDetail"
+            android:exported="false" />
+        <activity
             android:name=".presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"

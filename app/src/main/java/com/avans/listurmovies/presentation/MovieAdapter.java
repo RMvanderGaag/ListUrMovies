@@ -58,11 +58,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         private ImageView mMovieImage;
         private TextView mMovieRating;
 
-        private MovieViewHolder(View itemView) {
+        public MovieViewHolder(View itemView) {
             super(itemView);
             mMovieTitle = itemView.findViewById(R.id.movieTitle);
             mMovieImage = itemView.findViewById(R.id.movieImage);
             mMovieRating = itemView.findViewById(R.id.movieRating);
+
+            itemView.setOnClickListener(this);
         }
 
         public void bindTo(Movie currentMovie) {
@@ -74,10 +76,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         @Override
         public void onClick(View view){
             Movie currentMovie = mMovies.get(getAdapterPosition());
-//            Intent detailMovie = new Intent(mContext, );
-//
-//            detailMovie.putExtra("Movie", currentMovie);
-//            mContext.startActivity(detailMovie);
+            Intent detailMovie = new Intent(mContext, MovieDetail.class);
+
+            detailMovie.putExtra("Movie", currentMovie);
+            mContext.startActivity(detailMovie);
         }
     }
 }
