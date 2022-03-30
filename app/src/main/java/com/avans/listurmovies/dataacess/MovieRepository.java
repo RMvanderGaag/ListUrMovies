@@ -60,8 +60,43 @@ public class MovieRepository {
         }
     }
 
-    public MutableLiveData<MovieResults> getMovies(int page) {
+    public MutableLiveData<MovieResults> getPopularMovies(int page) {
         Call<MovieResults> call = mService.getPopularMovies(mContext.getResources().getString(R.string.api_key), LANGUAGE, page);
+        apiCall(call);
+        return listOfMovies;
+    }
+
+    public MutableLiveData<MovieResults> getLatestMovies(int page) {
+        Call<MovieResults> call = mService.getLatestMovies(mContext.getResources().getString(R.string.api_key), LANGUAGE);
+        apiCall(call);
+        return listOfMovies;
+    }
+
+    public MutableLiveData<MovieResults> getNowPlayingMovies(int page) {
+        Call<MovieResults> call = mService.getNowPlayingMovies(mContext.getResources().getString(R.string.api_key), LANGUAGE, page);
+        apiCall(call);
+        return listOfMovies;
+    }
+
+    public MutableLiveData<MovieResults> getTopRatedMovies(int page) {
+        Call<MovieResults> call = mService.getTopRatedMovies(mContext.getResources().getString(R.string.api_key), LANGUAGE, page);
+        apiCall(call);
+        return listOfMovies;
+    }
+
+    public MutableLiveData<MovieResults> getUpcomingMovies(int page) {
+        Call<MovieResults> call = mService.getUpcomingMovies(mContext.getResources().getString(R.string.api_key), LANGUAGE, page);
+        apiCall(call);
+        return listOfMovies;
+    }
+
+    public MutableLiveData<MovieResults> searchMovies(String query) {
+        Call<MovieResults> call = mService.searchMovie(mContext.getResources().getString(R.string.api_key), LANGUAGE, query);
+        apiCall(call);
+        return listOfMovies;
+    }
+
+    private void apiCall(Call<MovieResults> call){
         call.enqueue(new Callback<MovieResults>() {
             @Override
             public void onResponse(Call<MovieResults> call, Response<MovieResults> response) {
@@ -73,45 +108,6 @@ public class MovieRepository {
                 listOfMovies.postValue(null);
             }
         });
-        return listOfMovies;
     }
-
-//    public void getPopularMovies() {
-//        Call<MovieResults> call = mService.getPopularMeals(mContext.getResources().getString(R.string.api_key), LANGUAGE, 1);
-//
-//        call.enqueue(new Callback<MovieResults>() {
-//            @Override
-//            public void onResponse(Call<MovieResults> call, Response<MovieResults> response) {
-//                MovieResults results = response.body();
-//                List<Movie> movies = results.getResult();
-//
-//                String result;
-//                for (Movie movie : movies) {
-//                    result = "Movie{" +
-//                            "id=" + movie.getId() +
-//                            ", title='" + movie.getTitle() + '\'' +
-//                            ", overview='" + movie.getOverview() + '\'' +
-//                            ", release_date=" + movie.getRelease_date() +
-//                            ", genres=" + Arrays.toString(movie.getGenres()) +
-//                            ", original_language='" + movie.getOriginal_language() + '\'' +
-//                            ", original_title='" + movie.getOriginal_title() + '\'' +
-//                            ", poster_path='" + movie.getPoster_path() + '\'' +
-//                            ", backdrop_path='" + movie.getBackdrop_path() + '\'' +
-//                            ", popularity=" + movie.getPopularity() +
-//                            ", vote_avarage=" + movie.getVote_avarage() +
-//                            ", vote_count=" + movie.getVote_avarage() +
-//                            ", adult=" + movie.isAdult() +
-//                            '}';
-//
-//                    Log.d(MovieRepository.class.getSimpleName(), result);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<MovieResults> call, Throwable t) {
-//
-//            }
-//        });
-//    }
 
 }

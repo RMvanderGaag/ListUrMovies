@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private MovieViewModel mMovieViewModel;
     private int currentPage = 1;
     private MovieAdapter adapter;
-    private EditText filterInput;
+    private int filter = R.id.popular_movies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         SearchManager searchManager = (SearchManager) getSystemService(this.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
                 .getActionView();
@@ -76,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.d("submit", "onQueryTextSubmit: " + query);
+                mMovieViewModel.searchMovies(query).observe(MainActivity.this, movieResults -> {
+                    if(movieResults == null) return;
+                    adapter.setMovies(movieResults.getResult());
+                });
                 return false;
             }
 
@@ -84,7 +89,19 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("change", "onQueryTextChange: " + query);
                 return false;
             }
+
+
         });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                currentPage = 1;
+                loadMovies();
+                return false;
+            }
+        });
+
         return true;
     }
 
@@ -100,11 +117,34 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        switch (id) {
+            case R.id.latest_movies:
+                filter = R.id.latest_movies;
+                loadMovies();
+                break;
+            case R.id.now_playing:
+                filter = R.id.now_playing;
+                loadMovies();
+                break;
+            case R.id.popular_movies:
+                filter = R.id.popular_movies;
+                loadMovies();
+                break;
+            case R.id.top_rated:
+                filter = R.id.top_rated;
+                loadMovies();
+                break;
+            case R.id.upcoming:
+                filter = R.id.upcoming;
+                loadMovies();
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
     private void loadMovies(){
-        mMovieViewModel.getMovies(currentPage).observe(this, movieResults -> {
+        mMovieViewModel.getMovies(currentPage, filter).observe(this, movieResults -> {
             if(movieResults == null) return;
             adapter.setMovies(movieResults.getResult());
         });

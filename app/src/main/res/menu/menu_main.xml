@@ -8,10 +8,36 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
+
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_action_filter"
+        android:orderInCategory="50"
+        android:title="Filter"
+        app:showAsAction="always" >
+        <menu>
+            <item
+                android:id="@+id/popular_movies"
+                android:title="Popular movies"/>
+            <item
+                android:id="@+id/latest_movies"
+                android:title="Latest movies"/>
+            <item
+                android:id="@+id/now_playing"
+                android:title="Now playing"/>
+            <item
+                android:id="@+id/top_rated"
+                android:title="Top Rated"/>
+            <item
+                android:id="@+id/upcoming"
+                android:title="Upcoming"/>
+        </menu>
+    </item>
+
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_launcher_background"
-        android:orderInCategory="100"
+        android:orderInCategory="0"
         android:title="Search"
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView" />
