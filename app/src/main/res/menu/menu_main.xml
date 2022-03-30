@@ -20,9 +20,6 @@
                 android:id="@+id/popular_movies"
                 android:title="Popular movies"/>
             <item
-                android:id="@+id/latest_movies"
-                android:title="Latest movies"/>
-            <item
                 android:id="@+id/now_playing"
                 android:title="Now playing"/>
             <item

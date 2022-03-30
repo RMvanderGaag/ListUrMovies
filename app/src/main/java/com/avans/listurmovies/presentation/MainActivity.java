@@ -142,10 +142,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         switch (id) {
-            case R.id.latest_movies:
-                filter = R.id.latest_movies;
-                loadMovies();
-                break;
             case R.id.now_playing:
                 filter = R.id.now_playing;
                 loadMovies();

@@ -66,12 +66,6 @@ public class MovieRepository {
         return listOfMovies;
     }
 
-    public MutableLiveData<MovieResults> getLatestMovies(int page) {
-        Call<MovieResults> call = mService.getLatestMovies(mContext.getResources().getString(R.string.api_key), LANGUAGE, page);
-        apiCall(call);
-        return listOfMovies;
-    }
-
     public MutableLiveData<MovieResults> getNowPlayingMovies(int page) {
         Call<MovieResults> call = mService.getNowPlayingMovies(mContext.getResources().getString(R.string.api_key), LANGUAGE, page);
         apiCall(call);
