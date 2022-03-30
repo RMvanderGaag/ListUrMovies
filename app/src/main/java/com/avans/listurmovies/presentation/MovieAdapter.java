@@ -1,6 +1,7 @@
 package com.avans.listurmovies.presentation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         else return 0;
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder {
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView mMovieTitle;
         private ImageView mMovieImage;
         private TextView mMovieRating;
@@ -68,6 +69,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             mMovieTitle.setText(currentMovie.getTitle());
             Glide.with(mContext).load(mContext.getString(R.string.movieURL) + currentMovie.getPoster_path()).into(mMovieImage);
             mMovieRating.setText("Rating: " + currentMovie.getVote_average());
+        }
+
+        @Override
+        public void onClick(View view){
+            Movie currentMovie = mMovies.get(getAdapterPosition());
+//            Intent detailMovie = new Intent(mContext, );
+//
+//            detailMovie.putExtra("Movie", currentMovie);
+//            mContext.startActivity(detailMovie);
         }
     }
 }

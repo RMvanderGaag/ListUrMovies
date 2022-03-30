@@ -1,5 +1,6 @@
 package com.avans.listurmovies.presentation;
 
+import android.app.SearchManager;
 import android.os.Bundle;
 
 import com.avans.listurmovies.R;
@@ -10,6 +11,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
@@ -28,6 +31,8 @@ import com.avans.listurmovies.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.SearchView;
 
 import java.util.List;
 
@@ -36,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private MovieViewModel mMovieViewModel;
     private int currentPage = 1;
     private MovieAdapter adapter;
+    private EditText filterInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,26 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(this.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+                .getActionView();
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d("submit", "onQueryTextSubmit: " + query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                Log.d("change", "onQueryTextChange: " + query);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -79,12 +105,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadMovies(){
         mMovieViewModel.getMovies(currentPage).observe(this, movieResults -> {
+            if(movieResults == null) return;
             adapter.setMovies(movieResults.getResult());
         });
     }
 
-    public void test(View view) {
+    public void nextMovies(View view) {
         currentPage++;
+        loadMovies();
+    }
+
+    public void previousMovies(View view) {
+        if(currentPage == 1) return;
+        currentPage--;
         loadMovies();
     }
 }
