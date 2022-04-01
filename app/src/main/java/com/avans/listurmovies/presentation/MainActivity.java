@@ -4,45 +4,31 @@ import android.app.SearchManager;
 import android.os.Bundle;
 
 import com.avans.listurmovies.R;
-import com.avans.listurmovies.dataacess.MovieRepository;
 import com.avans.listurmovies.dataacess.MovieViewModel;
-import com.avans.listurmovies.domain.Movie;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.avans.listurmovies.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.SearchView;
-
-import java.util.List;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private MovieViewModel mMovieViewModel;
-    private int currentPage = 1;
+    private int mCurrentPage = 1;
+    private int mLastPage = 1;
     private MovieAdapter adapter;
     private int filter = R.id.popular_movies;
     private DrawerLayout drawer;
@@ -100,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 mMovieViewModel.searchMovies(query).observe(MainActivity.this, movieResults -> {
                     if(movieResults == null) return;
                     adapter.setMovies(movieResults.getResult());
+                    mLastPage = movieResults.getTotal_pages();
                 });
                 return false;
             }
@@ -116,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                currentPage = 1;
+                mCurrentPage = 1;
                 loadMovies();
                 return false;
             }
@@ -132,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
 
         //Set page to 1
-        currentPage = 1;
+        mCurrentPage = 1;
 
         int id = item.getItemId();
 
@@ -164,20 +151,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadMovies(){
-        mMovieViewModel.getMovies(currentPage, filter).observe(this, movieResults -> {
+        mMovieViewModel.getMovies(mCurrentPage, filter).observe(this, movieResults -> {
             if(movieResults == null) return;
             adapter.setMovies(movieResults.getResult());
+            mLastPage = movieResults.getTotal_pages();
         });
     }
 
     public void nextMovies(View view) {
-        currentPage++;
-        loadMovies();
+        if(mCurrentPage < mLastPage) {
+            mCurrentPage++;
+            loadMovies();
+            Toast.makeText(this, "Current page: " + mCurrentPage, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void previousMovies(View view) {
-        if(currentPage == 1) return;
-        currentPage--;
+        if(mCurrentPage == 1) return;
+        mCurrentPage--;
         loadMovies();
+        Toast.makeText(this, "Current page: " + mCurrentPage, Toast.LENGTH_SHORT).show();
     }
 }
