@@ -19,7 +19,7 @@
 
 - [Java] - Base language
 - [Retrofit] - A type-safe HTTP client for Android and Java
-- [RoomDatabase] - 
+- [RoomDatabase] - Simplified SQLite use in Android
 
 ## Development
 
