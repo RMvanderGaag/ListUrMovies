@@ -1,4 +1,4 @@
-package com.avans.listurmovies.domain;
+package com.avans.listurmovies.domain.movie;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

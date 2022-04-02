@@ -4,14 +4,11 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.avans.listurmovies.R;
-import com.avans.listurmovies.domain.Movie;
-import com.avans.listurmovies.domain.MovieResults;
-
-import java.util.List;
+import com.avans.listurmovies.domain.movie.Movie;
+import com.avans.listurmovies.domain.movie.MovieResults;
 
 public class MovieViewModel extends AndroidViewModel {
     private final MovieRepository mRepository;

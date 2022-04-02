@@ -5,7 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.avans.listurmovies.domain.Movie;
+import com.avans.listurmovies.domain.movie.Movie;
 
 import java.util.List;
 

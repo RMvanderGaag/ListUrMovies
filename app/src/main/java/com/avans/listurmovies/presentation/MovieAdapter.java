@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avans.listurmovies.R;
-import com.avans.listurmovies.domain.Movie;
+import com.avans.listurmovies.domain.movie.Movie;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
