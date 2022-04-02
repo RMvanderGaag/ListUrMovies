@@ -1,6 +1,6 @@
 # ListUrMovies
 ![Icon](https://i.imgur.com/aQSzvxm.png)
-#### 📱 Android app for viewing and rating movies
+## 📱 Android app for viewing and rating movies
 
 ## Features
 
@@ -15,7 +15,7 @@
 - Nightmode
 - Share movies with your friends
 
-## 🚀 Getting Started
+## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
@@ -29,10 +29,10 @@ git clone https://github.com/RMvanderGaag/ListUrMovies.git
 ```
 
 ##### 2. Import the project in AndroidStudio, and add API Key
-In Android Studio, go to File -> New -> Import project.
-Follow the dialog wizard to choose the folder where you cloned the project and click on open.
-Android Studio imports the projects and builds it for you.
-Create a .xml file called secret inside the res/values folder and fill it as shown below.
+In Android Studio, go to File -> New -> Import project.\
+Follow the dialog wizard to choose the folder where you cloned the project and click on open.\
+Android Studio imports the projects and builds it for you.\
+Create a .xml file called secret inside the res/values folder and fill it as shown below.\
 Add TheMovieDatabase (TMDB) API Key inside the string
 
 ```
@@ -46,8 +46,8 @@ Add TheMovieDatabase (TMDB) API Key inside the string
 
 - [Java] - Base language
 - [Retrofit 2] - A type-safe HTTP client for Android and Java
-- [Gson] - for serialization/deserialization Java Objects into JSON and back
-- [Glide] - for Loading images
+- [Gson] - For serialization/deserialization Java Objects into JSON and back
+- [Glide] - For Loading images
 - [RoomDatabase] - Simplified SQLite use in Android
 - [LiveData]
 - [ViewModel]
