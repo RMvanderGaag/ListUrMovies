@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.MovieViewModel;
+import com.avans.listurmovies.dataacess.UserViewModel;
+import com.bumptech.glide.Glide;
+import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,11 +24,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Map;
 
+public class MovieOverview extends AppCompatActivity {
+    private UserViewModel mUserViewModel;
     private MovieViewModel mMovieViewModel;
     private int mCurrentPage = 1;
     private int mLastPage = 1;
@@ -56,6 +63,21 @@ public class MainActivity extends AppCompatActivity {
 
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         loadMovies();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        TextView menu_username = header.findViewById(R.id.menu_username);
+        ImageView menu_user_image = header.findViewById(R.id.menu_user_image);
+
+        //Load user information into the menu
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        mUserViewModel.getUser().observe(MovieOverview.this, user -> {
+            if(user == null) return;
+            //Get the image hash from the Map
+
+            menu_username.setText(user.getUsername());
+            Glide.with(this).load(this.getString(R.string.userImageURL) + user.getAvatarHash()).into(menu_user_image);
+        });
     }
 
     @Override
@@ -83,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.d("submit", "onQueryTextSubmit: " + query);
-                mMovieViewModel.searchMovies(query).observe(MainActivity.this, movieResults -> {
+                mMovieViewModel.searchMovies(query).observe(MovieOverview.this, movieResults -> {
                     if(movieResults == null) return;
                     adapter.setMovies(movieResults.getResult());
                     mLastPage = movieResults.getTotal_pages();
