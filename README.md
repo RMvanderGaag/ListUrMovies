@@ -33,7 +33,7 @@ In Android Studio, go to File -> New -> Import project.\
 Follow the dialog wizard to choose the folder where you cloned the project and click on open.\
 Android Studio imports the projects and builds it for you.\
 Create a .xml file called secret inside the res/values folder and fill it as shown below.\
-Add TheMovieDatabase (TMDB) API Key inside the string
+Add TheMovieDatabase (TMDB) API Key inside the string.
 
 ```
 <?xml version="1.0" encoding="utf-8"?>
