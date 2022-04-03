@@ -9,10 +9,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="wrap_content"
-        android:layout_height="607dp"
+        android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-3dp"
-        tools:layout_editor_absoluteY="63dp"
         tools:listitem="@layout/movie_item" />
 
     <Button

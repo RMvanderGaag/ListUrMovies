@@ -2,13 +2,12 @@ package com.avans.listurmovies.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avans.listurmovies.R;
-import com.avans.listurmovies.domain.Movie;
+import com.avans.listurmovies.domain.movie.Movie;
 import com.bumptech.glide.Glide;
 
 public class MovieDetail extends AppCompatActivity {
