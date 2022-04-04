@@ -30,8 +30,8 @@ public class MovieViewModel extends AndroidViewModel {
         }
         return null;
     }
-    public MutableLiveData<MovieResults> searchMovies(String query) {
-        return mRepository.searchMovies(query);
+    public MutableLiveData<MovieResults> searchMovies(String query, int page) {
+        return mRepository.searchMovies(query, page);
     }
 
     public void insert(Movie movie) { mRepository.insert(movie); }
