@@ -39,6 +39,7 @@ public class MovieOverview extends AppCompatActivity {
     private MovieAdapter adapter;
     private int filter = R.id.popular_movies;
     private DrawerLayout drawer;
+    private String mQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,12 +105,10 @@ public class MovieOverview extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                mCurrentPage = 1;
                 Log.d("submit", "onQueryTextSubmit: " + query);
-                mMovieViewModel.searchMovies(query).observe(MovieOverview.this, movieResults -> {
-                    if(movieResults == null) return;
-                    adapter.setMovies(movieResults.getResult());
-                    mLastPage = movieResults.getTotal_pages();
-                });
+                mQuery = query;
+                loadSearchMovies();
                 return false;
             }
 
@@ -125,6 +124,7 @@ public class MovieOverview extends AppCompatActivity {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+                mQuery = "";
                 mCurrentPage = 1;
                 loadMovies();
                 return false;
@@ -180,10 +180,22 @@ public class MovieOverview extends AppCompatActivity {
         });
     }
 
+    private void loadSearchMovies(){
+        mMovieViewModel.searchMovies(mQuery, mCurrentPage).observe(MovieOverview.this, movieResults -> {
+            if(movieResults == null) return;
+            adapter.setMovies(movieResults.getResult());
+            mLastPage = movieResults.getTotal_pages();
+        });
+    }
+
     public void nextMovies(View view) {
         if(mCurrentPage < mLastPage) {
             mCurrentPage++;
-            loadMovies();
+            if(mQuery.isEmpty()){
+                loadMovies();
+            }else{
+                loadSearchMovies();
+            }
             Toast.makeText(this, "Current page: " + mCurrentPage, Toast.LENGTH_SHORT).show();
         }
     }
@@ -191,7 +203,11 @@ public class MovieOverview extends AppCompatActivity {
     public void previousMovies(View view) {
         if(mCurrentPage == 1) return;
         mCurrentPage--;
-        loadMovies();
+        if(mQuery.isEmpty()){
+            loadMovies();
+        }else{
+            loadSearchMovies();
+        }
         Toast.makeText(this, "Current page: " + mCurrentPage, Toast.LENGTH_SHORT).show();
     }
 }

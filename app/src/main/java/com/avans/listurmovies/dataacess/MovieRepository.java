@@ -2,6 +2,7 @@ package com.avans.listurmovies.dataacess;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -80,8 +81,9 @@ public class MovieRepository {
         return listOfMovies;
     }
 
-    public MutableLiveData<MovieResults> searchMovies(String query) {
-        Call<MovieResults> call = mService.searchMovie(mContext.getResources().getString(R.string.api_key), LANGUAGE, query);
+    public MutableLiveData<MovieResults> searchMovies(String query, int page) {
+        Log.d("query: ", query + " " + LANGUAGE);
+        Call<MovieResults> call = mService.searchMovie(mContext.getResources().getString(R.string.api_key), LANGUAGE, query, page);
         apiCall(call);
         return listOfMovies;
     }

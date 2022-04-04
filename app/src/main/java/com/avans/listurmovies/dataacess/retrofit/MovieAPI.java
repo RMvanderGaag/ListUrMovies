@@ -74,6 +74,7 @@ public interface MovieAPI {
     Call<MovieResults> searchMovie(
             @Query("api_key") String api_key,
             @Query("language") String language,
-            @Query("query") String query
+            @Query("query") String query,
+            @Query("page") int page
     );
 }
