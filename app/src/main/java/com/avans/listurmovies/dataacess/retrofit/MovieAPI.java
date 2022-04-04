@@ -1,9 +1,13 @@
 package com.avans.listurmovies.dataacess.retrofit;
 
+import com.avans.listurmovies.domain.Genre;
+import com.avans.listurmovies.domain.GenreResults;
 import com.avans.listurmovies.domain.movie.MovieResults;
 import com.avans.listurmovies.domain.user.User;
 import com.avans.listurmovies.domain.user.retrofit.PostUser;
 import com.avans.listurmovies.domain.user.retrofit.UserRequestToken;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -76,5 +80,11 @@ public interface MovieAPI {
             @Query("language") String language,
             @Query("query") String query,
             @Query("page") int page
+    );
+
+    @GET("genre/movie/list")
+    Call<GenreResults> getGenres(
+            @Query("api_key") String api_key,
+            @Query("language") String language
     );
 }

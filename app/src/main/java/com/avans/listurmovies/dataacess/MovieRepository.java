@@ -11,9 +11,12 @@ import com.avans.listurmovies.dataacess.retrofit.MovieAPI;
 import com.avans.listurmovies.dataacess.retrofit.RetrofitClient;
 import com.avans.listurmovies.dataacess.room.MovieDAO;
 import com.avans.listurmovies.dataacess.room.MovieRoomDatabase;
+import com.avans.listurmovies.domain.Genre;
+import com.avans.listurmovies.domain.GenreResults;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.MovieResults;
 
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -26,6 +29,8 @@ public class MovieRepository {
 
     private MovieDAO mMovieDAO;
     private final MutableLiveData<MovieResults> listOfMovies = new MutableLiveData<>();
+
+    private final MutableLiveData<GenreResults> listOfGenres = new MutableLiveData<>();
 
     private final static String LANGUAGE = Locale.getDefault().toLanguageTag();
 
@@ -86,6 +91,22 @@ public class MovieRepository {
         Call<MovieResults> call = mService.searchMovie(mContext.getResources().getString(R.string.api_key), LANGUAGE, query, page);
         apiCall(call);
         return listOfMovies;
+    }
+
+    public MutableLiveData<GenreResults> getGenres() {
+        Call<GenreResults> call = mService.getGenres(mContext.getResources().getString(R.string.api_key), LANGUAGE);
+        call.enqueue(new Callback<GenreResults>() {
+            @Override
+            public void onResponse(Call<GenreResults> call, Response<GenreResults> response) {
+                listOfGenres.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<GenreResults> call, Throwable t) {
+                listOfGenres.postValue(null);
+            }
+        });
+        return listOfGenres;
     }
 
     private void apiCall(Call<MovieResults> call){
