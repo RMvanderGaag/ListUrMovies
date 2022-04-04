@@ -73,7 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             //Image
             Glide.with(mContext).load(mContext.getString(R.string.movieURL) + currentMovie.getPoster_path())
                     .placeholder(R.drawable.img_placeholder).error(R.drawable.img_error).into(mMovieImage);
-            mMovieRating.setText("Rating: " + currentMovie.getVote_average());
+            mMovieRating.setText("\u2605 " + currentMovie.getVote_average());
         }
 
         @Override
