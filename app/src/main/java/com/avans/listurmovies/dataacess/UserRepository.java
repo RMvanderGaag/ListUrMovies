@@ -147,13 +147,12 @@ public class UserRepository {
                     Log.e(UserRepository.class.getSimpleName(), "Something went wrong when starting the account details retreive");
                 }
             });
-
-            return mUser;
         } else {
             User guest = new User(0, "Guest", null, false);
             mUser.setValue(guest);
-            return mUser;
         }
+
+        return mUser;
     }
 
     public void logOut() {

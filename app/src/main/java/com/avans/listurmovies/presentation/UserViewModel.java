@@ -1,4 +1,4 @@
-package com.avans.listurmovies.dataacess;
+package com.avans.listurmovies.presentation;
 
 import android.app.Application;
 
@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.avans.listurmovies.dataacess.UserRepository;
 import com.avans.listurmovies.domain.user.User;
 
 public class UserViewModel extends AndroidViewModel {

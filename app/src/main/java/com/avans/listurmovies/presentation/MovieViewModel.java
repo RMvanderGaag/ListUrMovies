@@ -1,4 +1,4 @@
-package com.avans.listurmovies.dataacess;
+package com.avans.listurmovies.presentation;
 
 import android.app.Application;
 
@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.avans.listurmovies.R;
+import com.avans.listurmovies.dataacess.MovieRepository;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.MovieResults;
 

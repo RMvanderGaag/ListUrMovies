@@ -4,8 +4,6 @@ import android.app.SearchManager;
 import android.os.Bundle;
 
 import com.avans.listurmovies.R;
-import com.avans.listurmovies.dataacess.MovieViewModel;
-import com.avans.listurmovies.dataacess.UserViewModel;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
@@ -28,8 +26,6 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Map;
 
 public class MovieOverview extends AppCompatActivity {
     private UserViewModel mUserViewModel;
@@ -57,13 +53,12 @@ public class MovieOverview extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = findViewById(R.id.movie_recyclerview);
         adapter = new MovieAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-        loadMovies();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         View header = navigationView.getHeaderView(0);
@@ -74,11 +69,14 @@ public class MovieOverview extends AppCompatActivity {
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         mUserViewModel.getUser().observe(MovieOverview.this, user -> {
             if(user == null) return;
-            //Get the image hash from the Map
-
+            //Set the username in the menu bar to the current logged in user
             menu_username.setText(user.getUsername());
+            //Set the user image in the menu bar to the current logged in user
             Glide.with(this).load(this.getString(R.string.userImageURL) + user.getAvatarHash()).into(menu_user_image);
         });
+
+        //Load the default movies page
+        loadMovies();
     }
 
     @Override
