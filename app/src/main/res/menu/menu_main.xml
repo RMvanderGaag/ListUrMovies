@@ -1,10 +1,41 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.avans.listurmovies.MainActivity">
+    tools:context="com.avans.listurmovies.presentation.MovieOverview">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_action_sort"
+        android:orderInCategory="50"
+        android:title="Filter"
+        app:showAsAction="always" >
+        <menu>
+            <item
+                android:id="@+id/popular_movies"
+                android:title="Popular movies"/>
+            <item
+                android:id="@+id/now_playing"
+                android:title="Now playing"/>
+            <item
+                android:id="@+id/top_rated"
+                android:title="Top Rated"/>
+            <item
+                android:id="@+id/upcoming"
+                android:title="Upcoming"/>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_launcher_background"
+        android:orderInCategory="0"
+        android:title="Search"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView" />
 </menu>
