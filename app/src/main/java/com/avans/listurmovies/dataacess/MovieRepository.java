@@ -26,13 +26,13 @@ import retrofit2.Response;
 public class MovieRepository {
     private final MovieAPI mService;
     private Context mContext;
-
     private MovieDAO mMovieDAO;
+
     private final MutableLiveData<MovieResults> listOfMovies = new MutableLiveData<>();
 
     private final MutableLiveData<GenreResults> listOfGenres = new MutableLiveData<>();
 
-    private final static String LANGUAGE = Locale.getDefault().toLanguageTag();
+    public final static String LANGUAGE = Locale.getDefault().toLanguageTag();
 
     public MovieRepository(Context context) {
         this.mService = RetrofitClient.getInstance().getmRepository();
@@ -89,6 +89,7 @@ public class MovieRepository {
     public MutableLiveData<MovieResults> searchMovies(String query, int page) {
         Log.d("query: ", query + " " + LANGUAGE);
         Call<MovieResults> call = mService.searchMovie(mContext.getResources().getString(R.string.api_key), LANGUAGE, query, page);
+        Log.d(MovieRepository.class.getSimpleName(), "https://api.themoviedb.org/3/search/movie?api_key=" + mContext.getResources().getString(R.string.api_key) + "&language=" + LANGUAGE + "&query=" + query + "&page=" + page);
         apiCall(call);
         return listOfMovies;
     }
@@ -109,6 +110,12 @@ public class MovieRepository {
         return listOfGenres;
     }
 
+    public MutableLiveData<MovieResults> setFilter(String filter, int page) {
+        Call<MovieResults> call = mService.setFilter(mContext.getResources().getString(R.string.api_key), LANGUAGE, page, filter);
+        apiCall(call);
+        return listOfMovies;
+    }
+
     private void apiCall(Call<MovieResults> call){
         call.enqueue(new Callback<MovieResults>() {
             @Override
@@ -122,5 +129,4 @@ public class MovieRepository {
             }
         });
     }
-
 }

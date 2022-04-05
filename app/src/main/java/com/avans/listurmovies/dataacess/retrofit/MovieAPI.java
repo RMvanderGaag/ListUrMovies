@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MovieAPI {
@@ -86,5 +87,13 @@ public interface MovieAPI {
     Call<GenreResults> getGenres(
             @Query("api_key") String api_key,
             @Query("language") String language
+    );
+
+    @GET("discover/movie")
+    Call<MovieResults> setFilter(
+          @Query("api_key") String api_key,
+          @Query("language") String language,
+          @Query("page") int page,
+          @Query("with_genres") String genres
     );
 }

@@ -24,17 +24,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.util.StringUtil;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class MovieOverview extends AppCompatActivity {
     private UserViewModel mUserViewModel;
@@ -47,7 +48,7 @@ public class MovieOverview extends AppCompatActivity {
     private String mQuery = "";
 
     private List<Genre> genres = new ArrayList<>();
-    private List<Genre> filteredGenres = new ArrayList<>();
+    private List<String> filteredGenres = new ArrayList<>();
 
 
     @Override
@@ -72,7 +73,6 @@ public class MovieOverview extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-        loadMovies();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         View header = navigationView.getHeaderView(0);
@@ -83,12 +83,14 @@ public class MovieOverview extends AppCompatActivity {
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         mUserViewModel.getUser().observe(MovieOverview.this, user -> {
             if(user == null) return;
-            //Get the image hash from the Map
-
+            //Set the username in the menu bar to the current logged in user
             menu_username.setText(user.getUsername());
+            //Set the user image in the menu bar to the current logged in user
             Glide.with(this).load(this.getString(R.string.userImageURL) + user.getAvatarHash()).into(menu_user_image);
         });
         getGenres();
+        //Load the default movies page
+        loadMovies();
     }
 
     @Override
@@ -115,6 +117,7 @@ public class MovieOverview extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                filteredGenres.clear();
                 mCurrentPage = 1;
                 Log.d("submit", "onQueryTextSubmit: " + query);
                 mQuery = query;
@@ -164,6 +167,7 @@ public class MovieOverview extends AppCompatActivity {
             }
 
             String[] genreArray = genreNames.toArray(new String[genreNames.size()]);
+            filteredGenres.clear();
 
             new AlertDialog.Builder(this)
                     .setTitle("Filter")
@@ -172,14 +176,18 @@ public class MovieOverview extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int position, boolean checked) {
                             if(checked){
-
+                                for(Genre g : genres){
+                                    if(g.getName().equals(genreArray[position])){
+                                        filteredGenres.add(g.getId() + "");
+                                    }
+                                }
                             }
                         }
                     })
 
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // Continue with delete operation
+                            setFilter();
                         }
                     })
 
@@ -231,10 +239,21 @@ public class MovieOverview extends AppCompatActivity {
         });
     }
 
+    private void setFilter(){
+        String filters = String.join(",", filteredGenres);
+        mMovieViewModel.setFilter(filters, mCurrentPage).observe(MovieOverview.this, movieResults -> {
+            if(movieResults == null) return;
+            adapter.setMovies(movieResults.getResult());
+            mLastPage = movieResults.getTotal_pages();
+        });
+    }
+
     public void nextMovies(View view) {
         if(mCurrentPage < mLastPage) {
             mCurrentPage++;
-            if(mQuery.isEmpty()){
+            if(!filteredGenres.isEmpty()) {
+                setFilter();
+            }else if(mQuery.isEmpty() ){
                 loadMovies();
             }else{
                 loadSearchMovies();
@@ -246,7 +265,9 @@ public class MovieOverview extends AppCompatActivity {
     public void previousMovies(View view) {
         if(mCurrentPage == 1) return;
         mCurrentPage--;
-        if(mQuery.isEmpty()){
+        if(filteredGenres.size() != 0) {
+            setFilter();
+        }else if(mQuery.isEmpty() ){
             loadMovies();
         }else{
             loadSearchMovies();
