@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,8 +14,7 @@
         <ImageView
             android:id="@+id/movie_detail_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/movie_detail_name"
@@ -38,18 +38,55 @@
             android:layout_height="wrap_content"
             android:padding="6dp"/>
 
-
         <TextView
             android:id="@+id/movie_detail_release"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="6dp"/>
 
+        <View
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="#808080"/>
+
+        <TextView
+            android:id="@+id/movie_detail_vote_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6dp" />
+
+        <TextView
+            android:id="@+id/movie_detail_vote_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6dp" />
+
+        <View
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="#808080"/>
+
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="6dp"-->
+<!--            android:text="@string/rate" />-->
 
 
-
-
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/review_recyclerview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/review_item"
+            android:paddingBottom=""/>
     </LinearLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

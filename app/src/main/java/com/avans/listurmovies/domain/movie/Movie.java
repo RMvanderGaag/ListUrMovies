@@ -3,6 +3,8 @@ package com.avans.listurmovies.domain.movie;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,6 +17,7 @@ public class Movie implements Serializable {
     private String overview;
 
     private Date release_date;
+    @SerializedName("genre_ids")
     private int[] genres;
 
     //Original
