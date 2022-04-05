@@ -11,12 +11,10 @@ import com.avans.listurmovies.dataacess.retrofit.MovieAPI;
 import com.avans.listurmovies.dataacess.retrofit.RetrofitClient;
 import com.avans.listurmovies.dataacess.room.MovieDAO;
 import com.avans.listurmovies.dataacess.room.MovieRoomDatabase;
-import com.avans.listurmovies.domain.Genre;
-import com.avans.listurmovies.domain.GenreResults;
+import com.avans.listurmovies.domain.genre.GenreResults;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.MovieResults;
 
-import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -30,9 +28,8 @@ public class MovieRepository {
 
     private final MutableLiveData<MovieResults> listOfMovies = new MutableLiveData<>();
 
+    public static final String LANGUAGE = Locale.getDefault().toLanguageTag();
     private final MutableLiveData<GenreResults> listOfGenres = new MutableLiveData<>();
-
-    public final static String LANGUAGE = Locale.getDefault().toLanguageTag();
 
     public MovieRepository(Context context) {
         this.mService = RetrofitClient.getInstance().getmRepository();
@@ -129,4 +126,5 @@ public class MovieRepository {
             }
         });
     }
+
 }

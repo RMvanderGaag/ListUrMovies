@@ -14,4 +14,10 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="stats">Stats:</string>
+    <string name="release_date">Release date:</string>
+    <string name="rating">Rating:</string>
+    <string name="total_ratings">Total ratings:</string>
+    <string name="rate">Rate</string>
+    <string name="reviews">Reviews</string>
 </resources>

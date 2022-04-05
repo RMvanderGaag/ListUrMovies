@@ -6,8 +6,7 @@ import android.os.Bundle;
 
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.MovieViewModel;
-import com.avans.listurmovies.dataacess.UserViewModel;
-import com.avans.listurmovies.domain.Genre;
+import com.avans.listurmovies.domain.genre.Genre;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
@@ -24,12 +23,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.util.StringUtil;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,7 +64,7 @@ public class MovieOverview extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = findViewById(R.id.movie_recyclerview);
         adapter = new MovieAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
