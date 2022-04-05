@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.avans.listurmovies.R;
@@ -12,11 +11,9 @@ import com.avans.listurmovies.dataacess.retrofit.MovieAPI;
 import com.avans.listurmovies.dataacess.retrofit.RetrofitClient;
 import com.avans.listurmovies.dataacess.room.MovieDAO;
 import com.avans.listurmovies.dataacess.room.MovieRoomDatabase;
-import com.avans.listurmovies.domain.Movie;
-import com.avans.listurmovies.domain.MovieResults;
+import com.avans.listurmovies.domain.movie.Movie;
+import com.avans.listurmovies.domain.movie.MovieResults;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -26,11 +23,11 @@ import retrofit2.Response;
 public class MovieRepository {
     private final MovieAPI mService;
     private Context mContext;
-
     private MovieDAO mMovieDAO;
+
     private final MutableLiveData<MovieResults> listOfMovies = new MutableLiveData<>();
 
-    private final static String LANGUAGE = Locale.getDefault().toLanguageTag();
+    public static final String LANGUAGE = Locale.getDefault().toLanguageTag();
 
     public MovieRepository(Context context) {
         this.mService = RetrofitClient.getInstance().getmRepository();
@@ -84,8 +81,10 @@ public class MovieRepository {
         return listOfMovies;
     }
 
-    public MutableLiveData<MovieResults> searchMovies(String query) {
-        Call<MovieResults> call = mService.searchMovie(mContext.getResources().getString(R.string.api_key), LANGUAGE, query);
+    public MutableLiveData<MovieResults> searchMovies(String query, int page) {
+        Log.d("query: ", query + " " + LANGUAGE);
+        Call<MovieResults> call = mService.searchMovie(mContext.getResources().getString(R.string.api_key), LANGUAGE, query, page);
+        Log.d(MovieRepository.class.getSimpleName(), "https://api.themoviedb.org/3/search/movie?api_key=" + mContext.getResources().getString(R.string.api_key) + "&language=" + LANGUAGE + "&query=" + query + "&page=" + page);
         apiCall(call);
         return listOfMovies;
     }
@@ -103,5 +102,4 @@ public class MovieRepository {
             }
         });
     }
-
 }

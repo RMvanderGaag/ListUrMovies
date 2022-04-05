@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avans.listurmovies.R;
-import com.avans.listurmovies.domain.Movie;
+import com.avans.listurmovies.domain.movie.Movie;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -73,7 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             //Image
             Glide.with(mContext).load(mContext.getString(R.string.movieURL) + currentMovie.getPoster_path())
                     .placeholder(R.drawable.img_placeholder).error(R.drawable.img_error).into(mMovieImage);
-            mMovieRating.setText("Rating: " + currentMovie.getVote_average());
+            mMovieRating.setText("\u2605 " + currentMovie.getVote_average());
         }
 
         @Override

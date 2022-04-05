@@ -1,17 +1,15 @@
-package com.avans.listurmovies.dataacess;
+package com.avans.listurmovies.presentation;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.avans.listurmovies.R;
-import com.avans.listurmovies.domain.Movie;
-import com.avans.listurmovies.domain.MovieResults;
-
-import java.util.List;
+import com.avans.listurmovies.dataacess.MovieRepository;
+import com.avans.listurmovies.domain.movie.Movie;
+import com.avans.listurmovies.domain.movie.MovieResults;
 
 public class MovieViewModel extends AndroidViewModel {
     private final MovieRepository mRepository;
@@ -33,8 +31,8 @@ public class MovieViewModel extends AndroidViewModel {
         }
         return null;
     }
-    public MutableLiveData<MovieResults> searchMovies(String query) {
-        return mRepository.searchMovies(query);
+    public MutableLiveData<MovieResults> searchMovies(String query, int page) {
+        return mRepository.searchMovies(query, page);
     }
 
     public void insert(Movie movie) { mRepository.insert(movie); }

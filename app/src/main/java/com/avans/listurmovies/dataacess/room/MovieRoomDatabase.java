@@ -10,9 +10,8 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.avans.listurmovies.domain.Movie;
+import com.avans.listurmovies.domain.movie.Movie;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 @Database(entities = {Movie.class}, version = 1, exportSchema = false)

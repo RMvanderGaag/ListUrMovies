@@ -1,4 +1,4 @@
-package com.avans.listurmovies.domain;
+package com.avans.listurmovies.domain.movie;
 
 import java.util.List;
 
