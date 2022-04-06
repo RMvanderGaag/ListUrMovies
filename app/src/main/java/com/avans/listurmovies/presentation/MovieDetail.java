@@ -13,19 +13,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avans.listurmovies.R;
-import com.avans.listurmovies.dataacess.ReviewRepository;
+import com.avans.listurmovies.dataacess.MovieRepository;
 import com.avans.listurmovies.domain.movie.Movie;
+import com.avans.listurmovies.domain.movie.Video;
 import com.bumptech.glide.Glide;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.StringJoiner;
 
 public class MovieDetail extends AppCompatActivity {
     private ReviewRepository mReviewRepostory = new ReviewRepository(this);
     private ReviewViewModel mReviewViewModel;
+    private MovieRepository mMovieRepository = new MovieRepository(this);
+    private ReviewViewModel mReviewViewModel;
     private ReviewAdapter mAdapter;
+    private int mCurrentPage = 1;
     private int mMovieId = 0;
+    private String mTrailerUrl;
+    private YouTubePlayerView youTubePlayerView;
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -33,6 +44,8 @@ public class MovieDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
+
+        mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
 
         TextView title = findViewById(R.id.movie_detail_name);
         TextView description = findViewById(R.id.movie_detail_description);
@@ -47,7 +60,6 @@ public class MovieDetail extends AppCompatActivity {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         StringJoiner genreText = new StringJoiner(" | ");
-
 
         mMovieId = movie.getId();
         String movieTitle = movie.getTitle();
@@ -68,6 +80,10 @@ public class MovieDetail extends AppCompatActivity {
         }else {
             Glide.with(this).load(this.getString(R.string.movieURL) + movieBackdropPath).into(image);
         }
+
+        youTubePlayerView = findViewById(R.id.youtube_player_view);
+        getLifecycle().addObserver(youTubePlayerView);
+
         //Set movie title
         title.setText(movieTitle);
         //Put language before the genres
@@ -92,19 +108,56 @@ public class MovieDetail extends AppCompatActivity {
         mAdapter = new ReviewAdapter(this);
         reviewRecyclerview.setAdapter(mAdapter);
         reviewRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-//        reviewRecyclerview.setNestedScrollingEnabled(false);
+
+        getMovieVideos();
+        getAllReviewsById();
+    }
+
+//    public void nextReviews(View view) {
+//        mCurrentPage++;
+//        getAllReviewsById();
+//    }
+
+    private void getMovieVideos() {
+        mMovieRepository.getMovieVideos(mMovieId).observe(MovieDetail.this, trailerResult -> {
+            if(trailerResult == null) return;
+            List<Video> allMovies = trailerResult.getResults();
+            List<Video> trailers = new ArrayList<>();
+
+            //Filter trailers and trailers on youtube only
+            for(Video video : allMovies) {
+                if(video.getType().equals("Trailer") && video.getSite().equals("YouTube")) {
+                    trailers.add(video);
+                }
+            }
 
         mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
 
         getAllReviewsById();
     }
+            //Get the trailer
+            if(trailers.size() > 0) {
+                mTrailerUrl = trailers.get(0).getVideoUrl();
+            }
 
     private void getAllReviewsById() {
         mReviewViewModel.getAllReviewsById(mMovieId, 1).observe(MovieDetail.this, reviewResults -> {
+            youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                @Override
+                public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                    youTubePlayer.loadVideo(mTrailerUrl, 0);
+                    youTubePlayer.mute();
+                }
+            });
+        });
+    }
+
+    private void getAllReviewsById() {
+        mReviewViewModel.getAllReviewsById(mMovieId, mCurrentPage).observe(MovieDetail.this, reviewResults -> {
             if(reviewResults == null) return;
 
             mAdapter.setReviews(reviewResults.getReviews());
-//            mLastPage = reviewResults.getTotal_pages();
+            // mLastPage = reviewResults.getTotal_pages();
         });
     }
 }

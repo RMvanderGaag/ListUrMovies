@@ -14,6 +14,7 @@ import com.avans.listurmovies.dataacess.room.MovieRoomDatabase;
 import com.avans.listurmovies.domain.genre.GenreResults;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.MovieResults;
+import com.avans.listurmovies.domain.movie.VideoResult;
 
 import java.util.Locale;
 
@@ -25,6 +26,7 @@ public class MovieRepository {
     private final MovieAPI mService;
     private Context mContext;
     private MovieDAO mMovieDAO;
+    private MutableLiveData<VideoResult> mVideo = new MutableLiveData<>();
 
     private final MutableLiveData<MovieResults> listOfMovies = new MutableLiveData<>();
 
@@ -127,4 +129,28 @@ public class MovieRepository {
         });
     }
 
+    public MutableLiveData<VideoResult> getMovieVideos(int movieId) {
+        Call<VideoResult> call = mService.getTrailer(movieId, mContext.getResources().getString(R.string.api_key), LANGUAGE);
+
+        call.enqueue(new Callback<VideoResult>() {
+            @Override
+            public void onResponse(Call<VideoResult> call, Response<VideoResult> response) {
+                if(response.code() == 200) {
+                    mVideo.setValue(response.body());
+                } else {
+                    Log.e(MovieRepository.class.getSimpleName(), "Something went wrong when retrieving the trailer: \n"
+                            + "Response code: " + response.code() + "\n"
+                            + "Response body: " + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VideoResult> call, Throwable t) {
+                Log.e(MovieRepository.class.getSimpleName(), "Something went wrong when starting the request to retrieve the trailer");
+                mVideo.setValue(null);
+            }
+        });
+
+        return mVideo;
+    }
 }
