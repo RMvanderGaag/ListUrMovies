@@ -35,8 +35,12 @@ public class MovieViewModel extends AndroidViewModel {
         return mRepository.searchMovies(query, page);
     }
 
-    public MutableLiveData<MovieResults> setFilter(String filter, int page) {
-        return mRepository.setFilter(filter, page);
+    public MutableLiveData<MovieResults> setGenreFilter(String filter, int page) {
+        return mRepository.setGenreFilter(filter, page);
+    }
+
+    public MutableLiveData<MovieResults> setRatingFilter(int min, int max, int page) {
+        return mRepository.setRatingFilter(min, max, page);
     }
 
     public MutableLiveData<GenreResults> getGenres() {
