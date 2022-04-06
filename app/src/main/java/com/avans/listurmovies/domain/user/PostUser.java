@@ -1,4 +1,4 @@
-package com.avans.listurmovies.domain.user.retrofit;
+package com.avans.listurmovies.domain.user;
 
 import java.util.Date;
 
