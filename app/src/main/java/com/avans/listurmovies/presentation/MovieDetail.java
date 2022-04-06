@@ -1,5 +1,6 @@
 package com.avans.listurmovies.presentation;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -9,11 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.MovieRepository;
+import com.avans.listurmovies.dataacess.ReviewRepository;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.Video;
 import com.bumptech.glide.Glide;
@@ -31,12 +34,10 @@ public class MovieDetail extends AppCompatActivity {
     private ReviewRepository mReviewRepostory = new ReviewRepository(this);
     private ReviewViewModel mReviewViewModel;
     private MovieRepository mMovieRepository = new MovieRepository(this);
-    private ReviewViewModel mReviewViewModel;
     private ReviewAdapter mAdapter;
     private int mCurrentPage = 1;
     private int mMovieId = 0;
-    private String mTrailerUrl;
-    private YouTubePlayerView youTubePlayerView;
+    private YouTubePlayerView mYouTubePlayerView;
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -81,8 +82,8 @@ public class MovieDetail extends AppCompatActivity {
             Glide.with(this).load(this.getString(R.string.movieURL) + movieBackdropPath).into(image);
         }
 
-        youTubePlayerView = findViewById(R.id.youtube_player_view);
-        getLifecycle().addObserver(youTubePlayerView);
+        mYouTubePlayerView = findViewById(R.id.youtube_player_view);
+        getLifecycle().addObserver(mYouTubePlayerView);
 
         //Set movie title
         title.setText(movieTitle);
@@ -131,24 +132,21 @@ public class MovieDetail extends AppCompatActivity {
                 }
             }
 
-        mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
-
-        getAllReviewsById();
-    }
             //Get the trailer
             if(trailers.size() > 0) {
-                mTrailerUrl = trailers.get(0).getVideoUrl();
-            }
+                String trailerURL = trailers.get(0).getVideoUrl();
 
-    private void getAllReviewsById() {
-        mReviewViewModel.getAllReviewsById(mMovieId, 1).observe(MovieDetail.this, reviewResults -> {
-            youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-                @Override
-                public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                    youTubePlayer.loadVideo(mTrailerUrl, 0);
-                    youTubePlayer.mute();
-                }
-            });
+                mYouTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                        youTubePlayer.loadVideo(trailerURL, 0);
+                        youTubePlayer.mute();
+                    }
+                });
+            } else {
+                //If no trailers are available, remove the player
+                ((ViewGroup)mYouTubePlayerView.getParent()).removeView(mYouTubePlayerView);
+            }
         });
     }
 
