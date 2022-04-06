@@ -6,7 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.avans.listurmovies.R;
-import com.avans.listurmovies.dataacess.MovieViewModel;
+import com.avans.listurmovies.dataacess.UserRepository;
 import com.avans.listurmovies.domain.genre.Genre;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
@@ -36,8 +36,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class MovieOverview extends AppCompatActivity {
+    private UserRepository mUserRepository;
     private UserViewModel mUserViewModel;
     private MovieViewModel mMovieViewModel;
     private int mCurrentPage = 1;
@@ -74,6 +74,7 @@ public class MovieOverview extends AppCompatActivity {
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
+        mUserRepository = new UserRepository(this);
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -214,6 +215,7 @@ public class MovieOverview extends AppCompatActivity {
                 sort = R.id.upcoming;
                 loadMovies();
                 break;
+            case R.id.movie_lists:
         }
 
         return super.onOptionsItemSelected(item);
@@ -279,5 +281,9 @@ public class MovieOverview extends AppCompatActivity {
 
         mRecyclerView.scrollTo(0, mRecyclerView.getTop());
         Toast.makeText(this, "Current page: " + mCurrentPage, Toast.LENGTH_SHORT).show();
+    }
+
+    public void logout(MenuItem item) {
+        mUserRepository.logOut();
     }
 }
