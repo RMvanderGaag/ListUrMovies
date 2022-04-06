@@ -3,6 +3,7 @@ package com.avans.listurmovies.presentation;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,13 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.MovieRepository;
-import com.avans.listurmovies.dataacess.ReviewRepository;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.Video;
 import com.bumptech.glide.Glide;
@@ -31,13 +34,16 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public class MovieDetail extends AppCompatActivity {
-    private ReviewRepository mReviewRepostory = new ReviewRepository(this);
     private ReviewViewModel mReviewViewModel;
     private MovieRepository mMovieRepository = new MovieRepository(this);
+    Toast noMoreReviewsToast;
     private ReviewAdapter mAdapter;
     private int mCurrentPage = 1;
+    private int mReviewsLastPage;
     private int mMovieId = 0;
     private YouTubePlayerView mYouTubePlayerView;
+    private NestedScrollView scrollView;
+    private LinearLayout reviewRecyclerViewContainer;
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -47,6 +53,9 @@ public class MovieDetail extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
 
         mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
+
+        scrollView = findViewById(R.id.nested_scroll_view);
+        reviewRecyclerViewContainer = findViewById(R.id.review_recyclerview_container);
 
         TextView title = findViewById(R.id.movie_detail_name);
         TextView description = findViewById(R.id.movie_detail_description);
@@ -103,21 +112,40 @@ public class MovieDetail extends AppCompatActivity {
         voteAverage.setText(getString(R.string.rating) + " \u2605" + movieVoteAverage);
         voteCount.setText(getString(R.string.total_ratings) + " " + movieVoteCount);
 
-//        mReviewRepostory.getAllReviewsById(movieId, 1);
-
         RecyclerView reviewRecyclerview = findViewById(R.id.review_recyclerview);
         mAdapter = new ReviewAdapter(this);
         reviewRecyclerview.setAdapter(mAdapter);
         reviewRecyclerview.setLayoutManager(new LinearLayoutManager(this));
 
+        noMoreReviewsToast = Toast.makeText(this, "No more reviews", Toast.LENGTH_SHORT);
+
         getMovieVideos();
         getAllReviewsById();
     }
 
-//    public void nextReviews(View view) {
-//        mCurrentPage++;
-//        getAllReviewsById();
-//    }
+    public void nextReviews(View view) {
+        if(mReviewsLastPage > mCurrentPage) {
+            mCurrentPage++;
+            getAllReviewsById();
+            scrollToTopOfReviews();
+        } else {
+            noMoreReviewsToast.show();
+        }
+    }
+
+    public void previousReviews(View view) {
+        if(mCurrentPage > 1) {
+            mCurrentPage--;
+            getAllReviewsById();
+            scrollToTopOfReviews();
+        } else {
+            noMoreReviewsToast.show();
+        }
+    }
+
+    public void scrollToTopOfReviews() {
+        scrollView.scrollTo(0, reviewRecyclerViewContainer.getTop());
+    }
 
     private void getMovieVideos() {
         mMovieRepository.getMovieVideos(mMovieId).observe(MovieDetail.this, trailerResult -> {
@@ -155,7 +183,7 @@ public class MovieDetail extends AppCompatActivity {
             if(reviewResults == null) return;
 
             mAdapter.setReviews(reviewResults.getReviews());
-            // mLastPage = reviewResults.getTotal_pages();
+            mReviewsLastPage = reviewResults.getTotal_pages();
         });
     }
 }

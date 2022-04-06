@@ -2,6 +2,7 @@ package com.avans.listurmovies.presentation;
 
 import android.app.SearchManager;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.avans.listurmovies.R;
@@ -10,6 +11,7 @@ import com.avans.listurmovies.domain.genre.Genre;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class MovieOverview extends AppCompatActivity {
     private UserViewModel mUserViewModel;
     private MovieViewModel mMovieViewModel;
@@ -43,6 +46,8 @@ public class MovieOverview extends AppCompatActivity {
     private int sort = R.id.popular_movies;
     private DrawerLayout drawer;
     private String mQuery = "";
+
+    RecyclerView mRecyclerView;
 
     private List<Genre> genres = new ArrayList<>();
     private List<String> filteredGenres = new ArrayList<>();
@@ -64,10 +69,10 @@ public class MovieOverview extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        RecyclerView recyclerView = findViewById(R.id.movie_recyclerview);
+        mRecyclerView = findViewById(R.id.movie_recyclerview);
         adapter = new MovieAdapter(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
@@ -255,6 +260,8 @@ public class MovieOverview extends AppCompatActivity {
             }else{
                 loadSearchMovies();
             }
+
+            mRecyclerView.scrollTo(0, mRecyclerView.getTop());
             Toast.makeText(this, "Current page: " + mCurrentPage, Toast.LENGTH_SHORT).show();
         }
     }
@@ -269,6 +276,8 @@ public class MovieOverview extends AppCompatActivity {
         }else{
             loadSearchMovies();
         }
+
+        mRecyclerView.scrollTo(0, mRecyclerView.getTop());
         Toast.makeText(this, "Current page: " + mCurrentPage, Toast.LENGTH_SHORT).show();
     }
 }
