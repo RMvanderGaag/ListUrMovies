@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -40,10 +41,12 @@ public class MovieDetail extends AppCompatActivity {
     private ReviewAdapter mAdapter;
     private int mCurrentPage = 1;
     private int mReviewsLastPage;
-    private int mMovieId = 0;
     private YouTubePlayerView mYouTubePlayerView;
     private NestedScrollView scrollView;
     private LinearLayout reviewRecyclerViewContainer;
+
+    private int mMovieId = 0;
+    private String mMovieTitle;
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -53,6 +56,8 @@ public class MovieDetail extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
 
         mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 
         scrollView = findViewById(R.id.nested_scroll_view);
         reviewRecyclerViewContainer = findViewById(R.id.review_recyclerview_container);
@@ -68,17 +73,16 @@ public class MovieDetail extends AppCompatActivity {
         //Get movie info
         Movie movie = (Movie) getIntent().getSerializableExtra("Movie");
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         StringJoiner genreText = new StringJoiner(" | ");
 
         mMovieId = movie.getId();
-        String movieTitle = movie.getTitle();
-        String movieDescription = movie.getOverview();
-        Date movieReleaseDate = movie.getRelease_date();
-        int[] movieGenreIds = movie.getGenres();
-        String movieOriginalLanguage = movie.getOriginal_language();
-        String moviePosterPath = movie.getPoster_path();
-        String movieBackdropPath = movie.getBackdrop_path();
+        mMovieTitle = movie.getTitle();
+        String mMovieDescription = movie.getOverview();
+        Date mMovieReleaseDate = movie.getRelease_date();
+        int[] mMovieGenreIds = movie.getGenres();
+        String mMovieOriginalLanguage = movie.getOriginal_language();
+        String mMoviePosterPath = movie.getPoster_path();
+        String mMovieBackdropPath = movie.getBackdrop_path();
 
         //Stats
         double movieVoteAverage = movie.getVote_average();
@@ -86,28 +90,28 @@ public class MovieDetail extends AppCompatActivity {
 
         //Set movie image, if backdrop is not available use the original (poster) image
         if(movie.getBackdrop_path() == null) {
-            Glide.with(this).load(this.getString(R.string.movieURL) + moviePosterPath).into(image);
+            Glide.with(this).load(this.getString(R.string.movieURL) + mMoviePosterPath).into(image);
         }else {
-            Glide.with(this).load(this.getString(R.string.movieURL) + movieBackdropPath).into(image);
+            Glide.with(this).load(this.getString(R.string.movieURL) + mMovieBackdropPath).into(image);
         }
 
         mYouTubePlayerView = findViewById(R.id.youtube_player_view);
         getLifecycle().addObserver(mYouTubePlayerView);
 
         //Set movie title
-        title.setText(movieTitle);
+        title.setText(mMovieTitle);
         //Put language before the genres
-        genreText.add(movieOriginalLanguage.toUpperCase());
+        genreText.add(mMovieOriginalLanguage.toUpperCase());
         //Set genres
-        for(int genreId: movieGenreIds) {
+        for(int genreId: mMovieGenreIds) {
             genreText.add(String.valueOf(genreId));
         }
 
         genre.setText(genreText.toString());
         //Set movie description
-        description.setText(movieDescription);
+        description.setText(mMovieDescription);
         //Set release date
-        release.setText(getString(R.string.release_date) + " " + dateFormat.format(movieReleaseDate));
+        release.setText(getString(R.string.release_date) + " " + dateFormat.format(mMovieReleaseDate));
 
         voteAverage.setText(getString(R.string.rating) + " \u2605" + movieVoteAverage);
         voteCount.setText(getString(R.string.total_ratings) + " " + movieVoteCount);
@@ -150,15 +154,7 @@ public class MovieDetail extends AppCompatActivity {
     private void getMovieVideos() {
         mMovieRepository.getMovieVideos(mMovieId).observe(MovieDetail.this, trailerResult -> {
             if(trailerResult == null) return;
-            List<Video> allMovies = trailerResult.getResults();
-            List<Video> trailers = new ArrayList<>();
-
-            //Filter trailers and trailers on youtube only
-            for(Video video : allMovies) {
-                if(video.getType().equals("Trailer") && video.getSite().equals("YouTube")) {
-                    trailers.add(video);
-                }
-            }
+            List<Video> trailers = getMovieTrailer(trailerResult.getResults());
 
             //Get the trailer
             if(trailers.size() > 0) {
@@ -185,5 +181,32 @@ public class MovieDetail extends AppCompatActivity {
             mAdapter.setReviews(reviewResults.getReviews());
             mReviewsLastPage = reviewResults.getTotal_pages();
         });
+    }
+
+    public List<Video> getMovieTrailer(List<Video> allMovies) {
+        List<Video> trailers = new ArrayList<>();
+
+        //Filter trailers and trailers on youtube only
+        for(Video video : allMovies) {
+            if(video.getType().equals("Trailer") && video.getSite().equals("YouTube")) {
+                trailers.add(video);
+            }
+        }
+
+        return trailers;
+    }
+
+    public void shareMovie(View view) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        mMovieRepository.getMovieVideos(mMovieId).observe(MovieDetail.this, trailerResult -> {
+            if(trailerResult == null) return;
+            List<Video> trailers = getMovieTrailer(trailerResult.getResults());
+            String trailerURL = trailers.get(0).getVideoUrl();
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.check_this_movie) + "! \n" + mMovieTitle + "\n" + getString(R.string.youtube_link) + trailerURL);
+        });
+
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 }

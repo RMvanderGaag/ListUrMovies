@@ -139,5 +139,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:src="@drawable/ic_share"
+        android:onClick="shareMovie"
         android:layout_margin="16dp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

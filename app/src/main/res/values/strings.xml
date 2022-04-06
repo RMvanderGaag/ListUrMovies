@@ -20,4 +20,6 @@
     <string name="total_ratings">Total ratings:</string>
     <string name="rate">Rate</string>
     <string name="reviews">Reviews</string>
+    <string name="youtube_link">https://www.youtube.com/watch?v=</string>
+    <string name="check_this_movie">Check this movie</string>
 </resources>
