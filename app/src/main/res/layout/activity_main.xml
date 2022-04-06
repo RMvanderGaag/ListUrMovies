@@ -19,12 +19,12 @@
             android:layout_height="50dp"
             android:theme="@style/Theme.ListUrMovies.AppBarOverlay">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.ListUrMovies.PopupOverlay" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/primary_color"
+                app:popupTheme="@style/Theme.ListUrMovies.PopupOverlay" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
