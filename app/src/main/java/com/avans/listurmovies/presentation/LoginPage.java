@@ -10,10 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.avans.listurmovies.R;
+import com.avans.listurmovies.businesslogic.validation.ValidationTools;
 import com.avans.listurmovies.dataacess.UserRepository;
 
 public class LoginPage extends AppCompatActivity {
     private UserRepository mUserRepository = new UserRepository(this);
+    private ValidationTools validationTools = new ValidationTools();
 
     private EditText mUsername;
     private EditText mPassword;
@@ -38,7 +40,17 @@ public class LoginPage extends AppCompatActivity {
                 String username = mUsername.getText().toString();
                 String password = mPassword.getText().toString();
 
-                mUserRepository.loginGetToken(username, password);
+                if (validationTools.isUsernameFieldEmpty(username)) {
+                    mUsername.setError(getText(R.string.username_error));
+                }
+
+                if (validationTools.isPasswordFieldEmpty(password)) {
+                    mPassword.setError(getText(R.string.password_error));
+                }
+
+                if (!validationTools.isPasswordFieldEmpty(password) && !validationTools.isPasswordFieldEmpty(password)) {
+                    mUserRepository.loginGetToken(username, password);
+                }
             }
         });
     }
