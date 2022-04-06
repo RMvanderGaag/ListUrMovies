@@ -1,5 +1,6 @@
 package com.avans.listurmovies.dataacess.retrofit;
 
+import com.avans.listurmovies.domain.genre.GenreResults;
 import com.avans.listurmovies.domain.movie.MovieResults;
 import com.avans.listurmovies.domain.movie.VideoResult;
 import com.avans.listurmovies.domain.review.ReviewResults;
@@ -81,6 +82,20 @@ public interface MovieAPI {
             @Query("page") int page
     );
 
+    @GET("genre/movie/list")
+    Call<GenreResults> getGenres(
+            @Query("api_key") String api_key,
+            @Query("language") String language
+    );
+
+    @GET("discover/movie")
+    Call<MovieResults> setFilter(
+          @Query("api_key") String api_key,
+          @Query("language") String language,
+          @Query("page") int page,
+          @Query("with_genres") String genres
+    );
+
     @GET("movie/{movie_id}/videos")
     Call<VideoResult> getTrailer(
             @Path("movie_id") int movie_id,
@@ -93,7 +108,6 @@ public interface MovieAPI {
     Call<ReviewResults> getAllReviewsByPage(
             @Path("movie_id") int movie_id,
             @Query("api_key") String api_key,
-            @Query("language") String language,
             @Query("page") int page
     );
 }

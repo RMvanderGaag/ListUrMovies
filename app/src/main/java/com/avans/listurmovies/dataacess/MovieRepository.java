@@ -11,6 +11,7 @@ import com.avans.listurmovies.dataacess.retrofit.MovieAPI;
 import com.avans.listurmovies.dataacess.retrofit.RetrofitClient;
 import com.avans.listurmovies.dataacess.room.MovieDAO;
 import com.avans.listurmovies.dataacess.room.MovieRoomDatabase;
+import com.avans.listurmovies.domain.genre.GenreResults;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.MovieResults;
 import com.avans.listurmovies.domain.movie.VideoResult;
@@ -30,6 +31,7 @@ public class MovieRepository {
     private final MutableLiveData<MovieResults> listOfMovies = new MutableLiveData<>();
 
     public static final String LANGUAGE = Locale.getDefault().toLanguageTag();
+    private final MutableLiveData<GenreResults> listOfGenres = new MutableLiveData<>();
 
     public MovieRepository(Context context) {
         this.mService = RetrofitClient.getInstance().getmRepository();
@@ -87,6 +89,28 @@ public class MovieRepository {
         Log.d("query: ", query + " " + LANGUAGE);
         Call<MovieResults> call = mService.searchMovie(mContext.getResources().getString(R.string.api_key), LANGUAGE, query, page);
         Log.d(MovieRepository.class.getSimpleName(), "https://api.themoviedb.org/3/search/movie?api_key=" + mContext.getResources().getString(R.string.api_key) + "&language=" + LANGUAGE + "&query=" + query + "&page=" + page);
+        apiCall(call);
+        return listOfMovies;
+    }
+
+    public MutableLiveData<GenreResults> getGenres() {
+        Call<GenreResults> call = mService.getGenres(mContext.getResources().getString(R.string.api_key), LANGUAGE);
+        call.enqueue(new Callback<GenreResults>() {
+            @Override
+            public void onResponse(Call<GenreResults> call, Response<GenreResults> response) {
+                listOfGenres.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<GenreResults> call, Throwable t) {
+                listOfGenres.postValue(null);
+            }
+        });
+        return listOfGenres;
+    }
+
+    public MutableLiveData<MovieResults> setFilter(String filter, int page) {
+        Call<MovieResults> call = mService.setFilter(mContext.getResources().getString(R.string.api_key), LANGUAGE, page, filter);
         apiCall(call);
         return listOfMovies;
     }

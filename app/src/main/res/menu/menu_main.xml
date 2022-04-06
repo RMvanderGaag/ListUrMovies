@@ -3,17 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.avans.listurmovies.presentation.MovieOverview">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_filter"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="@string/action_filter"
+        android:icon="@drawable/ic_action_filter"
+        app:showAsAction="always" />
 
 
     <item
-        android:id="@+id/action_filter"
+        android:id="@+id/action_sort"
         android:icon="@drawable/ic_action_sort"
         android:orderInCategory="50"
-        android:title="Filter"
+        android:title="Sort"
         app:showAsAction="always" >
         <menu>
             <item

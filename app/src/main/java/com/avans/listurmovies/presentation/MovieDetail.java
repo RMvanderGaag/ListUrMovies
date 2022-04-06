@@ -10,11 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.MovieRepository;
+import com.avans.listurmovies.dataacess.ReviewRepository;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.Video;
 import com.bumptech.glide.Glide;
@@ -29,13 +31,13 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public class MovieDetail extends AppCompatActivity {
-    private MovieRepository mMovieRepository = new MovieRepository(this);
+    private ReviewRepository mReviewRepostory = new ReviewRepository(this);
     private ReviewViewModel mReviewViewModel;
+    private MovieRepository mMovieRepository = new MovieRepository(this);
     private ReviewAdapter mAdapter;
     private int mCurrentPage = 1;
     private int mMovieId = 0;
-    private String mTrailerUrl;
-    private YouTubePlayerView youTubePlayerView;
+    private YouTubePlayerView mYouTubePlayerView;
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -80,8 +82,8 @@ public class MovieDetail extends AppCompatActivity {
             Glide.with(this).load(this.getString(R.string.movieURL) + movieBackdropPath).into(image);
         }
 
-        youTubePlayerView = findViewById(R.id.youtube_player_view);
-        getLifecycle().addObserver(youTubePlayerView);
+        mYouTubePlayerView = findViewById(R.id.youtube_player_view);
+        getLifecycle().addObserver(mYouTubePlayerView);
 
         //Set movie title
         title.setText(movieTitle);
@@ -100,6 +102,8 @@ public class MovieDetail extends AppCompatActivity {
 
         voteAverage.setText(getString(R.string.rating) + " \u2605" + movieVoteAverage);
         voteCount.setText(getString(R.string.total_ratings) + " " + movieVoteCount);
+
+//        mReviewRepostory.getAllReviewsById(movieId, 1);
 
         RecyclerView reviewRecyclerview = findViewById(R.id.review_recyclerview);
         mAdapter = new ReviewAdapter(this);
@@ -130,22 +134,26 @@ public class MovieDetail extends AppCompatActivity {
 
             //Get the trailer
             if(trailers.size() > 0) {
-                mTrailerUrl = trailers.get(0).getVideoUrl();
-            }
+                String trailerURL = trailers.get(0).getVideoUrl();
 
-            youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-                @Override
-                public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                    youTubePlayer.loadVideo(mTrailerUrl, 0);
-                    youTubePlayer.mute();
-                }
-            });
+                mYouTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                        youTubePlayer.loadVideo(trailerURL, 0);
+                        youTubePlayer.mute();
+                    }
+                });
+            } else {
+                //If no trailers are available, remove the player
+                ((ViewGroup)mYouTubePlayerView.getParent()).removeView(mYouTubePlayerView);
+            }
         });
     }
 
     private void getAllReviewsById() {
         mReviewViewModel.getAllReviewsById(mMovieId, mCurrentPage).observe(MovieDetail.this, reviewResults -> {
             if(reviewResults == null) return;
+
             mAdapter.setReviews(reviewResults.getReviews());
             // mLastPage = reviewResults.getTotal_pages();
         });
