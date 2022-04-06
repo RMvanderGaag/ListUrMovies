@@ -11,8 +11,8 @@ import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.retrofit.MovieAPI;
 import com.avans.listurmovies.dataacess.retrofit.RetrofitClient;
 import com.avans.listurmovies.domain.user.User;
-import com.avans.listurmovies.domain.user.retrofit.PostUser;
-import com.avans.listurmovies.domain.user.retrofit.UserRequestToken;
+import com.avans.listurmovies.domain.user.PostUser;
+import com.avans.listurmovies.domain.user.UserRequestToken;
 import com.avans.listurmovies.presentation.LoginPage;
 import com.avans.listurmovies.presentation.MovieOverview;
 

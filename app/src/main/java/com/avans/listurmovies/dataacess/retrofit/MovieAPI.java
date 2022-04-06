@@ -1,10 +1,11 @@
 package com.avans.listurmovies.dataacess.retrofit;
 
 import com.avans.listurmovies.domain.movie.MovieResults;
+import com.avans.listurmovies.domain.movie.VideoResult;
 import com.avans.listurmovies.domain.review.ReviewResults;
 import com.avans.listurmovies.domain.user.User;
-import com.avans.listurmovies.domain.user.retrofit.PostUser;
-import com.avans.listurmovies.domain.user.retrofit.UserRequestToken;
+import com.avans.listurmovies.domain.user.PostUser;
+import com.avans.listurmovies.domain.user.UserRequestToken;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -80,10 +81,17 @@ public interface MovieAPI {
             @Query("page") int page
     );
 
+    @GET("movie/{movie_id}/videos")
+    Call<VideoResult> getTrailer(
+            @Path("movie_id") int movie_id,
+            @Query("api_key") String api_key,
+            @Query("language") String language
+    );
+
     // ### Reviews ###
     @GET("movie/{movie_id}/reviews")
     Call<ReviewResults> getAllReviewsByPage(
-            @Path("movie_id") int id,
+            @Path("movie_id") int movie_id,
             @Query("api_key") String api_key,
             @Query("language") String language,
             @Query("page") int page

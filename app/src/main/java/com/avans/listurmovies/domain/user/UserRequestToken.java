@@ -1,4 +1,4 @@
-package com.avans.listurmovies.domain.user.retrofit;
+package com.avans.listurmovies.domain.user;
 
 public class UserRequestToken {
     private String request_token;
