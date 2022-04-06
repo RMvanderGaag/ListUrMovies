@@ -96,12 +96,13 @@ public class MovieDetail extends AppCompatActivity {
 
         mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
 
-        getAllReviewsById(1);
+        getAllReviewsById();
     }
 
-    private void getAllReviewsById(int currentPage) {
-        mReviewViewModel.getAllReviewsById(mMovieId, currentPage).observe(MovieDetail.this, reviewResults -> {
+    private void getAllReviewsById() {
+        mReviewViewModel.getAllReviewsById(mMovieId, 1).observe(MovieDetail.this, reviewResults -> {
             if(reviewResults == null) return;
+
             mAdapter.setReviews(reviewResults.getReviews());
 //            mLastPage = reviewResults.getTotal_pages();
         });

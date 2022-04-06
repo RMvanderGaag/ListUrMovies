@@ -5,20 +5,18 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class ReviewResults {
-    @SerializedName("id")
     private int id;
     private int page;
     private int total_results;
     private int total_pages;
-    @SerializedName("results")
-    private List<Review> reviews;
+    private List<Review> results;
 
     public ReviewResults(int id, int page, int total_results, int total_pages, List<Review> reviews) {
         this.id = id;
         this.page = page;
         this.total_results = total_results;
         this.total_pages = total_pages;
-        this.reviews = reviews;
+        this.results = reviews;
     }
 
     public int getId() {
@@ -38,6 +36,6 @@ public class ReviewResults {
     }
 
     public List<Review> getReviews() {
-        return reviews;
+        return results;
     }
 }

@@ -25,7 +25,7 @@ public class ReviewRepository {
     }
 
     public MutableLiveData<ReviewResults> getAllReviewsById(int movieId, int currentPage) {
-        Call<ReviewResults> call = mService.getAllReviewsByPage(movieId, mContext.getResources().getString(R.string.api_key), MovieRepository.LANGUAGE, currentPage);
+        Call<ReviewResults> call = mService.getAllReviewsByPage(movieId, mContext.getResources().getString(R.string.api_key), currentPage);
         Log.d(ReviewRepository.class.getSimpleName(), "MovieId: " + movieId + ", language: " + MovieRepository.LANGUAGE + ", currentpage: " + currentPage);
 
         call.enqueue(new Callback<ReviewResults>() {

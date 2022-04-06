@@ -100,7 +100,6 @@ public interface MovieAPI {
     Call<ReviewResults> getAllReviewsByPage(
             @Path("movie_id") int id,
             @Query("api_key") String api_key,
-            @Query("language") String language,
             @Query("page") int page
     );
 }
