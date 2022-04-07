@@ -31,4 +31,5 @@
     <string name="example_rating">8.5</string>
     <string name="no_account"><u>No account?</u></string>
     <string name="forgot_password"><u>Forgot password?</u></string>
+    <string name="input_field_error">This field cannot be empty</string>
 </resources>
