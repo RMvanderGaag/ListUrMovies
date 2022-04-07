@@ -22,4 +22,6 @@
     <string name="reviews">Reviews</string>
     <string name="youtube_link">https://www.youtube.com/watch?v=</string>
     <string name="check_this_movie">Check this movie</string>
+    <string name="submit">Submit</string>
+    <string name="example_rating">8.5</string>
 </resources>

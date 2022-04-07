@@ -1,8 +1,10 @@
 package com.avans.listurmovies.dataacess;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -14,6 +16,8 @@ import com.avans.listurmovies.dataacess.room.MovieRoomDatabase;
 import com.avans.listurmovies.domain.genre.GenreResults;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.MovieResults;
+import com.avans.listurmovies.domain.movie.Rating;
+import com.avans.listurmovies.domain.movie.RatingResponse;
 import com.avans.listurmovies.domain.movie.VideoResult;
 
 import java.util.Locale;
@@ -152,5 +156,42 @@ public class MovieRepository {
         });
 
         return mVideo;
+    }
+
+    public void rateMovie(int movie_id, String rating) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(UserRepository.SHARED_PREFS, Context.MODE_PRIVATE);
+        String session_id = sharedPreferences.getString(UserRepository.SESSION_ID, "");
+
+        Rating body = new Rating(Double.parseDouble(rating));
+
+        if(session_id.equals("")) {
+            Log.d(MovieRepository.class.getSimpleName(), "User is not logged in");
+            return;
+        }
+
+        //Retrofit rate movie
+        Call<RatingResponse> call = mService.postRating(movie_id, mContext.getResources().getString(R.string.api_key), session_id, body);
+        Toast postErrorToast = Toast.makeText(mContext, "Something went wrong, try again later", Toast.LENGTH_LONG);
+        Toast postSuccesToast = Toast.makeText(mContext, "Successfully rated the movie", Toast.LENGTH_LONG);
+
+        call.enqueue(new Callback<RatingResponse>() {
+            @Override
+            public void onResponse(Call<RatingResponse> call, Response<RatingResponse> response) {
+                if(response.code() == 201) {
+                    postSuccesToast.show();
+                } else {
+                    postErrorToast.show();
+                    Log.e(MovieRepository.class.getSimpleName(), "Something went wrong when posting the rating: \n"
+                            + "Response code: " + response.code() + "\n"
+                            + "Response body: " + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RatingResponse> call, Throwable t) {
+                postErrorToast.show();
+                Log.e(MovieRepository.class.getSimpleName(), "Something went wrong when starting the rating post");
+            }
+        });
     }
 }

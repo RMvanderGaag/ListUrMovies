@@ -9,19 +9,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.MovieRepository;
 import com.avans.listurmovies.domain.movie.Movie;
+import com.avans.listurmovies.domain.movie.Rating;
 import com.avans.listurmovies.domain.movie.Video;
 import com.bumptech.glide.Glide;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -47,6 +53,7 @@ public class MovieDetail extends AppCompatActivity {
 
     private int mMovieId = 0;
     private String mMovieTitle;
+    double mMovieVoteAverage;
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -85,7 +92,7 @@ public class MovieDetail extends AppCompatActivity {
         String mMovieBackdropPath = movie.getBackdrop_path();
 
         //Stats
-        double movieVoteAverage = movie.getVote_average();
+        mMovieVoteAverage = movie.getVote_average();
         int movieVoteCount = movie.getVote_count();
 
         //Set movie image, if backdrop is not available use the original (poster) image
@@ -113,7 +120,7 @@ public class MovieDetail extends AppCompatActivity {
         //Set release date
         release.setText(getString(R.string.release_date) + " " + dateFormat.format(mMovieReleaseDate));
 
-        voteAverage.setText(getString(R.string.rating) + " \u2605" + movieVoteAverage);
+        voteAverage.setText(getString(R.string.rating) + " \u2605" + mMovieVoteAverage);
         voteCount.setText(getString(R.string.total_ratings) + " " + movieVoteCount);
 
         RecyclerView reviewRecyclerview = findViewById(R.id.review_recyclerview);
@@ -208,5 +215,38 @@ public class MovieDetail extends AppCompatActivity {
 
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
+    }
+
+    public void rateMovie(View view) {
+        final AlertDialog.Builder ratingPopUp = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.number_picker, null);
+        NumberPicker numberPicker = dialogView.findViewById(R.id.numberPicker);
+
+        String[] nums = {"0.5","1","1.5","2","2.5","3","3.5","4","4.5","5","5.5","6","6.5","7","7.5","8","8.5","9","9.5","10"};
+        numberPicker.setDisplayedValues(nums);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(nums.length - 1);
+
+        //Set text in the popup
+        ratingPopUp.setTitle("Rate");
+        ratingPopUp.setMessage("Give the movie a rating");
+        ratingPopUp.setView(dialogView);
+
+        ratingPopUp.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+
+        ratingPopUp.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //Submit the rating
+                mMovieRepository.rateMovie(mMovieId, nums[numberPicker.getValue()]);
+            }
+        });
+
+        //Show the popup
+        ratingPopUp.show();
     }
 }
