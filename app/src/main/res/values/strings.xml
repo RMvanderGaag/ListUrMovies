@@ -38,4 +38,9 @@
     <string name="genre">Genre</string>
     <string name="deleted_list">Successfully deleted the list</string>
     <string name="deleted_movie_from_list">Successfully deleted the movie from list</string>
+    <string name="add_movie">Add movie</string>
+    <string name="add_list">Add list</string>
+    <string name="list_details">List details</string>
+    <string name="list">List</string>
+    <string name="movie_details">Movie details</string>
 </resources>

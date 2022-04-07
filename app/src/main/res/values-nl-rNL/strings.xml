@@ -35,4 +35,9 @@
     <string name="genre">Genre</string>
     <string name="deleted_list">De lijst is succesvol verwijderd</string>
     <string name="deleted_movie_from_list">De filmt is succesvol verwijderd uit de lijst</string>
+    <string name="add_movie">Film toevoegen</string>
+    <string name="add_list">Lijst toevoegen</string>
+    <string name="list_details">Lijst details</string>
+    <string name="list">Lijst</string>
+    <string name="movie_details">Film details</string>
 </resources>
