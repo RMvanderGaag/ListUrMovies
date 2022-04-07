@@ -113,11 +113,18 @@ public class MovieRepository {
         return listOfGenres;
     }
 
-    public MutableLiveData<MovieResults> setFilter(String filter, int page) {
-        Call<MovieResults> call = mService.setFilter(mContext.getResources().getString(R.string.api_key), LANGUAGE, page, filter);
+    public MutableLiveData<MovieResults> setGenreFilter(String filter, int page) {
+        Call<MovieResults> call = mService.setGenreFilter(mContext.getResources().getString(R.string.api_key), LANGUAGE, page, filter);
         apiCall(call);
         return listOfMovies;
     }
+
+    public MutableLiveData<MovieResults> setRatingFilter(int min, int max, int page) {
+        Call<MovieResults> call = mService.setRatingFilter(mContext.getResources().getString(R.string.api_key), LANGUAGE, page, min, max);
+        apiCall(call);
+        return listOfMovies;
+    }
+
 
     private void apiCall(Call<MovieResults> call){
         call.enqueue(new Callback<MovieResults>() {

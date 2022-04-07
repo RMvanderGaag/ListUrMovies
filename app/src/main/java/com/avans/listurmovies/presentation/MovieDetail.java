@@ -86,7 +86,7 @@ public class MovieDetail extends AppCompatActivity {
         mMovieTitle = movie.getTitle();
         String mMovieDescription = movie.getOverview();
         Date mMovieReleaseDate = movie.getRelease_date();
-        int[] mMovieGenreIds = movie.getGenres();
+        String movieGenres = getIntent().getStringExtra("Genres");
         String mMovieOriginalLanguage = movie.getOriginal_language();
         String mMoviePosterPath = movie.getPoster_path();
         String mMovieBackdropPath = movie.getBackdrop_path();
@@ -110,9 +110,7 @@ public class MovieDetail extends AppCompatActivity {
         //Put language before the genres
         genreText.add(mMovieOriginalLanguage.toUpperCase());
         //Set genres
-        for(int genreId: mMovieGenreIds) {
-            genreText.add(String.valueOf(genreId));
-        }
+        genreText.add(movieGenres);
 
         genre.setText(genreText.toString());
         //Set movie description

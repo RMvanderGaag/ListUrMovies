@@ -91,11 +91,20 @@ public interface MovieAPI {
     );
 
     @GET("discover/movie")
-    Call<MovieResults> setFilter(
+    Call<MovieResults> setGenreFilter(
           @Query("api_key") String api_key,
           @Query("language") String language,
           @Query("page") int page,
           @Query("with_genres") String genres
+    );
+
+    @GET("discover/movie")
+    Call<MovieResults> setRatingFilter(
+            @Query("api_key") String api_key,
+            @Query("language") String language,
+            @Query("page") int page,
+            @Query("vote_average.gte") Number min,
+            @Query("vote_average.lte") Number max
     );
 
     @GET("movie/{movie_id}/videos")
