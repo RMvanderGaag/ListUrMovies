@@ -115,8 +115,7 @@ public interface MovieAPI {
     @GET("movie/{movie_id}/videos")
     Call<VideoResult> getTrailer(
             @Path("movie_id") int movie_id,
-            @Query("api_key") String api_key,
-            @Query("language") String language
+            @Query("api_key") String api_key
     );
 
     //Rate movie

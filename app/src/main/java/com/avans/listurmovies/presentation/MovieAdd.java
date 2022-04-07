@@ -6,30 +6,23 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.SearchManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.avans.listurmovies.R;
-import com.avans.listurmovies.domain.list.MovieList;
-import com.avans.listurmovies.domain.movie.Movie;
-
-import java.util.List;
 
 public class MovieAdd extends AppCompatActivity {
 
     private int mCurrentPage = 1;
     private int mLastPage = 1;
-    private MovieAddAdapter adapter;
+    private MovieAddAdapter mAdapter;
     private String mQuery = "";
-    private int filter = R.id.popular_movies;
+    private int mFilter = R.id.popular_movies;
     private MovieViewModel mMovieViewModel;
-    private String listid;
+    private String mListid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +30,13 @@ public class MovieAdd extends AppCompatActivity {
         setContentView(R.layout.activity_movie_to_movie_list_add);
 
         RecyclerView recyclerView = findViewById(R.id.movieAdd_recyclerview);
-        adapter = new MovieAddAdapter(this);
-        recyclerView.setAdapter(adapter);
+        mAdapter = new MovieAddAdapter(this);
+        recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
-        listid = (String) getIntent().getSerializableExtra("ListId");
+        mListid = (String) getIntent().getSerializableExtra("ListId");
 
         loadMovies();
     }
@@ -101,19 +94,19 @@ public class MovieAdd extends AppCompatActivity {
 
         switch (id) {
             case R.id.now_playing:
-                filter = R.id.now_playing;
+                mFilter = R.id.now_playing;
                 loadMovies();
                 break;
             case R.id.popular_movies:
-                filter = R.id.popular_movies;
+                mFilter = R.id.popular_movies;
                 loadMovies();
                 break;
             case R.id.top_rated:
-                filter = R.id.top_rated;
+                mFilter = R.id.top_rated;
                 loadMovies();
                 break;
             case R.id.upcoming:
-                filter = R.id.upcoming;
+                mFilter = R.id.upcoming;
                 loadMovies();
                 break;
         }
@@ -122,16 +115,16 @@ public class MovieAdd extends AppCompatActivity {
     }
 
     private void loadMovies(){
-        mMovieViewModel.getMovies(mCurrentPage, filter).observe(this, movieResults -> {
+        mMovieViewModel.getMovies(mCurrentPage, mFilter).observe(this, movieResults -> {
             if(movieResults == null) return;
-            adapter.setMovies(movieResults.getResult(), listid);
+            mAdapter.setMovies(movieResults.getResult(), mListid);
         });
     }
 
     private void loadSearchMovies(){
         mMovieViewModel.searchMovies(mQuery, mCurrentPage).observe(MovieAdd.this, movieResults -> {
             if(movieResults == null) return;
-            adapter.setMovies(movieResults.getResult(), listid);
+            mAdapter.setMovies(movieResults.getResult(), mListid);
             mLastPage = movieResults.getTotal_pages();
         });
     }

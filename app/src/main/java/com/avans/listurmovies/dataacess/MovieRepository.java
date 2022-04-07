@@ -115,7 +115,7 @@ public class MovieRepository {
     }
 
     public MutableLiveData<VideoResult> getMovieVideos(int movieId) {
-        Call<VideoResult> call = mService.getTrailer(movieId, mContext.getResources().getString(R.string.api_key), LANGUAGE);
+        Call<VideoResult> call = mService.getTrailer(movieId, mContext.getResources().getString(R.string.api_key));
 
         call.enqueue(new Callback<VideoResult>() {
             @Override
@@ -140,7 +140,7 @@ public class MovieRepository {
     }
 
     public void rateMovie(int movie_id, String rating) {
-        Toast notLoggedInToast = Toast.makeText(mContext, "Please login first", Toast.LENGTH_LONG);
+        Toast notLoggedInToast = Toast.makeText(mContext, R.string.login_first, Toast.LENGTH_LONG);
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(UserRepository.SHARED_PREFS, Context.MODE_PRIVATE);
         String session_id = sharedPreferences.getString(UserRepository.SESSION_ID, "");
 

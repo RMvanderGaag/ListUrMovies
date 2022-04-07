@@ -19,7 +19,7 @@ import com.avans.listurmovies.dataacess.UserRepository;
 
 public class LoginPage extends AppCompatActivity {
     private UserRepository mUserRepository = new UserRepository(this);
-    private ValidationTools validationTools = new ValidationTools();
+    private ValidationTools mValidationTools = new ValidationTools();
 
     private EditText mUsername;
     private EditText mPassword;
@@ -48,15 +48,15 @@ public class LoginPage extends AppCompatActivity {
                 String username = mUsername.getText().toString();
                 String password = mPassword.getText().toString();
 
-                if (validationTools.isInputFieldEmpty(username)) {
+                if (mValidationTools.isInputFieldEmpty(username)) {
                     mUsername.setError(getText(R.string.username_error));
                 }
 
-                if (validationTools.isInputFieldEmpty(password)) {
+                if (mValidationTools.isInputFieldEmpty(password)) {
                     mPassword.setError(getText(R.string.password_error));
                 }
 
-                if (!validationTools.isInputFieldEmpty(password) && !validationTools.isInputFieldEmpty(password)) {
+                if (!mValidationTools.isInputFieldEmpty(password) && !mValidationTools.isInputFieldEmpty(password)) {
                     mUserRepository.loginGetToken(username, password);
                 }
             }

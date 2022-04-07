@@ -7,25 +7,25 @@ import org.junit.Test;
 import com.avans.listurmovies.businesslogic.validation.ValidationTools;
 
 public class LoginUnitTest {
-    private final ValidationTools validationTools = new ValidationTools();
+    private final ValidationTools mValidationTools = new ValidationTools();
 
     @Test
     public void usernameFieldValidator_NotEmptyInputField_ReturnsFalse() {
-        assertFalse(validationTools.isInputFieldEmpty("LoremIpsum"));
+        assertFalse(mValidationTools.isInputFieldEmpty("LoremIpsum"));
     }
 
     @Test
     public void usernameFieldValidator_EmptyInputField_ReturnsTrue() {
-        assertTrue(validationTools.isInputFieldEmpty(""));
+        assertTrue(mValidationTools.isInputFieldEmpty(""));
     }
 
     @Test
     public void passwordFieldValidator_NotEmptyInputField_ReturnsFalse() {
-        assertFalse(validationTools.isInputFieldEmpty("LoremIpsum"));
+        assertFalse(mValidationTools.isInputFieldEmpty("LoremIpsum"));
     }
 
     @Test
     public void passwordFieldValidator_EmptyInputField_ReturnsTrue() {
-        assertTrue(validationTools.isInputFieldEmpty(""));
+        assertTrue(mValidationTools.isInputFieldEmpty(""));
     }
 }
