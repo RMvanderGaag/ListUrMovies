@@ -104,9 +104,7 @@ public class MovieAdd extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         switch (id) {
             case R.id.now_playing:

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.UserRepository;
 import com.avans.listurmovies.domain.genre.Genre;
+import com.avans.listurmovies.domain.genre.GenreResults;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
@@ -27,6 +28,7 @@ import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -94,6 +96,15 @@ public class MovieOverview extends AppCompatActivity {
         mUserRepository = new UserRepository(this);
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
+
+        final Observer<GenreResults> genreObserver = new Observer<GenreResults>() {
+            @Override
+            public void onChanged(GenreResults genreResults) {
+                genres.addAll(genreResults.getResult());
+            }
+        };
+        mMovieViewModel.getGenres().observe(MovieOverview.this, genreObserver);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         View header = navigationView.getHeaderView(0);
         TextView menu_username = header.findViewById(R.id.menu_username);
@@ -141,8 +152,7 @@ public class MovieOverview extends AppCompatActivity {
             //Set the user image in the menu bar to the current logged in user
             Glide.with(this).load(this.getString(R.string.userImageURL) + user.getAvatarHash()).into(menu_user_image);
         });
-        getGenres();
-        adapter.setGenres(genres);
+        //adapter.setGenres(genres);
         //Load the default movies page
         loadMovies();
     }
@@ -243,6 +253,7 @@ public class MovieOverview extends AppCompatActivity {
 
     private void showAlertBox(int id){
         if(id == R.id.filter_genre){
+
             List<String> genreNames = new ArrayList<>();
             for(Genre g : genres){
                 genreNames.add(g.getName());
@@ -338,9 +349,9 @@ public class MovieOverview extends AppCompatActivity {
     }
 
     private void getGenres(){
-        mMovieViewModel.getGenres().observe(MovieOverview.this, genreResults -> {
-            genres.addAll(genreResults.getResult());
-        });
+//        mMovieViewModel.getGenres().observe(MovieOverview.this, genreResults -> {
+//            genres.addAll(genreResults.getResult());
+//        });
     }
 
     private void setGenreFilter(){

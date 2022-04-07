@@ -13,8 +13,10 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avans.listurmovies.R;
+import com.avans.listurmovies.dataacess.MovieRepository;
 import com.avans.listurmovies.domain.genre.Genre;
 import com.avans.listurmovies.domain.movie.Movie;
+import com.avans.listurmovies.domain.movie.MovieResults;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -91,17 +93,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             Movie currentMovie = mMovies.get(getAdapterPosition());
             Intent detailMovie = new Intent(mContext, MovieDetail.class);
 
-            StringJoiner genres = new StringJoiner(" | ");
-            for(int i = 0; i < currentMovie.getGenres().length; i++){
-                for(Genre g : mGenres){
-                    if(g.getId() == currentMovie.getGenres()[i]){
-                        genres.add(g.getName());
-                    }
-                }
-            }
-
             detailMovie.putExtra("Movie", currentMovie);
-            detailMovie.putExtra("Genres", genres.toString());
             mContext.startActivity(detailMovie);
         }
     }
