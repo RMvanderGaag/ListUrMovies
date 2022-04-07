@@ -40,15 +40,15 @@ public class LoginPage extends AppCompatActivity {
                 String username = mUsername.getText().toString();
                 String password = mPassword.getText().toString();
 
-                if (validationTools.isUsernameFieldEmpty(username)) {
+                if (validationTools.isInputFieldEmpty(username)) {
                     mUsername.setError(getText(R.string.username_error));
                 }
 
-                if (validationTools.isPasswordFieldEmpty(password)) {
+                if (validationTools.isInputFieldEmpty(password)) {
                     mPassword.setError(getText(R.string.password_error));
                 }
 
-                if (!validationTools.isPasswordFieldEmpty(password) && !validationTools.isPasswordFieldEmpty(password)) {
+                if (!validationTools.isInputFieldEmpty(password) && !validationTools.isInputFieldEmpty(password)) {
                     mUserRepository.loginGetToken(username, password);
                 }
             }

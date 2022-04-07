@@ -1,11 +1,10 @@
 package com.avans.listurmovies.businesslogic.validation;
 
 public class ValidationTools {
-    public boolean isUsernameFieldEmpty(String username) {
-        return username.isEmpty();
-    }
-
-    public boolean isPasswordFieldEmpty(String password) {
-        return password.isEmpty();
+    /**
+     * @desc isInputFieldEmpty checks if the input field is empty
+     */
+    public boolean isInputFieldEmpty(String input) {
+        return input.isEmpty();
     }
 }
