@@ -32,9 +32,9 @@ public class ListRepository {
     private Context mContext;
     private UserRepository mUserRepository = UserRepository.getInstance();
 
-    private final MutableLiveData<MovieListResults> listOfLists = new MutableLiveData<MovieListResults>();
-    private final MutableLiveData<MovieList> listOfListDetails = new MutableLiveData<MovieList>();
-    private final MutableLiveData<MovieResults> listOfMovies = new MutableLiveData<MovieResults>();
+    private final MutableLiveData<MovieListResults> mListOfLists = new MutableLiveData<MovieListResults>();
+    private final MutableLiveData<MovieList> mListOfListDetails = new MutableLiveData<MovieList>();
+    private final MutableLiveData<MovieResults> mListOfMovies = new MutableLiveData<MovieResults>();
 
     public static final String LANGUAGE = Locale.getDefault().toLanguageTag();
 
@@ -50,7 +50,7 @@ public class ListRepository {
         Call<MovieListResults> call = mService.getAllLists(userinfo.getId(), mContext.getResources().getString(R.string.api_key), LANGUAGE, session_id, page);
         apiCall(call);
 
-        return listOfLists;
+        return mListOfLists;
     }
 
     public MutableLiveData<MovieList> getListDetails(String list_id) {
@@ -59,7 +59,7 @@ public class ListRepository {
             @Override
             public void onResponse(Call<MovieList> call, Response<MovieList> response) {
                 if(response.code() == 200) {
-                    listOfListDetails.setValue(response.body());
+                    mListOfListDetails.setValue(response.body());
                 } else {
                     Log.e(UserRepository.class.getSimpleName(), "Something went wrong when retrieving the reviews: \n"
                             + "Response code: " + response.code() + "\n"
@@ -74,7 +74,7 @@ public class ListRepository {
         });
 
 
-        return listOfListDetails;
+        return mListOfListDetails;
     }
 
     public void addList(String name, String description) {
@@ -98,7 +98,7 @@ public class ListRepository {
             @Override
             public void onResponse(Call<MovieResults> call, Response<MovieResults> response) {
                 if(response.code() == 201) {
-                    listOfMovies.setValue(response.body());
+                    mListOfMovies.setValue(response.body());
                 } else {
                     Log.e(UserRepository.class.getSimpleName(), "Something went wrong when retrieving the reviews: \n"
                             + "Response code: " + response.code() + "\n"
@@ -125,7 +125,7 @@ public class ListRepository {
             @Override
             public void onResponse(Call<MovieResults> call, Response<MovieResults> response) {
                 if(response.code() == 200) {
-                    listOfMovies.setValue(response.body());
+                    mListOfMovies.setValue(response.body());
                     deletedMovieFromListToast.show();
                 } else {
                     Log.e(UserRepository.class.getSimpleName(), "Something went wrong when retrieving the reviews: \n"
@@ -171,12 +171,12 @@ public class ListRepository {
         call.enqueue(new Callback<MovieListResults>() {
             @Override
             public void onResponse(Call<MovieListResults> call, Response<MovieListResults> response) {
-                listOfLists.setValue(response.body());
+                mListOfLists.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<MovieListResults> call, Throwable t) {
-                listOfLists.postValue(null);
+                mListOfLists.postValue(null);
             }
         });
     }

@@ -24,7 +24,6 @@ public class MovieAddAdapter extends RecyclerView.Adapter<MovieAddAdapter.MovieA
     private final LayoutInflater mInflater;
     private List<Movie> mMovies;
     private Context mContext;
-    private MovieListViewModel mMovieListViewModel;
     private ListRepository mListRepository;
     private String list_id;
 

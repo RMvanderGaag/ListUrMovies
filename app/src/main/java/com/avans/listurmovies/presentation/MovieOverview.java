@@ -1,9 +1,7 @@
 package com.avans.listurmovies.presentation;
 
-import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -14,15 +12,11 @@ import com.avans.listurmovies.domain.genre.GenreResults;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.RequiresApi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.text.InputType;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
@@ -36,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -53,13 +46,13 @@ public class MovieOverview extends AppCompatActivity {
     private MovieViewModel mMovieViewModel;
     private int mCurrentPage = 1;
     private int mLastPage = 1;
-    private MovieAdapter adapter;
-    private int sort = R.id.popular_movies;
-    private DrawerLayout drawer;
+    private MovieAdapter mAdapter;
+    private int mSort = R.id.popular_movies;
+    private DrawerLayout mDrawer;
 
     private String mQuery = "";
-    private int minRating;
-    private int maxRating;
+    private int mMinRating;
+    private int mMaxRating;
 
     private Boolean mLoadMovies = true;
     private Boolean mGenreFilter = false;
@@ -68,8 +61,8 @@ public class MovieOverview extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
 
-    private List<Genre> genres = new ArrayList<>();
-    private List<String> filteredGenres = new ArrayList<>();
+    private List<Genre> mGenres = new ArrayList<>();
+    private List<String> mFilteredGenres = new ArrayList<>();
 
 
     @Override
@@ -81,16 +74,16 @@ public class MovieOverview extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawer = findViewById(R.id.drawer_layout);
+        mDrawer = findViewById(R.id.drawer_layout);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+        mDrawer.addDrawerListener(toggle);
         toggle.syncState();
 
         mRecyclerView = findViewById(R.id.movie_recyclerview);
-        adapter = new MovieAdapter(this);
-        mRecyclerView.setAdapter(adapter);
+        mAdapter = new MovieAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         mUserRepository = new UserRepository(this);
@@ -99,7 +92,7 @@ public class MovieOverview extends AppCompatActivity {
         final Observer<GenreResults> genreObserver = new Observer<GenreResults>() {
             @Override
             public void onChanged(GenreResults genreResults) {
-                genres.addAll(genreResults.getResult());
+                mGenres.addAll(genreResults.getResult());
             }
         };
 
@@ -142,7 +135,7 @@ public class MovieOverview extends AppCompatActivity {
                     }
                 }
 
-                drawer.closeDrawer(GravityCompat.START);
+                mDrawer.closeDrawer(GravityCompat.START);
                 return true;
             }
         });
@@ -162,8 +155,8 @@ public class MovieOverview extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -184,7 +177,7 @@ public class MovieOverview extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                filteredGenres.clear();
+                mFilteredGenres.clear();
                 mCurrentPage = 1;
                 mQuery = query;
                 loadSearchMovies();
@@ -228,19 +221,19 @@ public class MovieOverview extends AppCompatActivity {
 
         switch (id) {
             case R.id.now_playing:
-                sort = R.id.now_playing;
+                mSort = R.id.now_playing;
                 loadMovies();
                 break;
             case R.id.popular_movies:
-                sort = R.id.popular_movies;
+                mSort = R.id.popular_movies;
                 loadMovies();
                 break;
             case R.id.top_rated:
-                sort = R.id.top_rated;
+                mSort = R.id.top_rated;
                 loadMovies();
                 break;
             case R.id.upcoming:
-                sort = R.id.upcoming;
+                mSort = R.id.upcoming;
                 loadMovies();
                 break;
             case R.id.movie_lists:
@@ -253,11 +246,11 @@ public class MovieOverview extends AppCompatActivity {
         if(id == R.id.filter_genre){
 
             List<String> genreNames = new ArrayList<>();
-            for(Genre g : genres){
+            for(Genre g : mGenres){
                 genreNames.add(g.getName());
             }
             String[] genreArray = genreNames.toArray(new String[genreNames.size()]);
-            filteredGenres.clear();
+            mFilteredGenres.clear();
 
 
             AlertDialog dialog = new AlertDialog.Builder(this)
@@ -266,9 +259,9 @@ public class MovieOverview extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int position, boolean checked) {
                     if(checked){
-                        for(Genre g : genres){
+                        for(Genre g : mGenres){
                             if(g.getName().equals(genreArray[position])){
-                                filteredGenres.add(g.getId() + "");
+                                mFilteredGenres.add(g.getId() + "");
                             }
                         }
                     }
@@ -311,8 +304,8 @@ public class MovieOverview extends AppCompatActivity {
                 public void onClick(View view) {
                     if(minVal.getValue() > maxVal.getValue()) return;
                     dialog.dismiss();
-                    minRating = minVal.getValue();
-                    maxRating = maxVal.getValue();
+                    mMinRating = minVal.getValue();
+                    mMaxRating = maxVal.getValue();
                     setRatingFilter();
                 }
             });
@@ -329,9 +322,9 @@ public class MovieOverview extends AppCompatActivity {
     private void loadMovies(){
         setInActive();
         mLoadMovies = true;
-        mMovieViewModel.getMovies(mCurrentPage, sort).observe(this, movieResults -> {
+        mMovieViewModel.getMovies(mCurrentPage, mSort).observe(this, movieResults -> {
             if(movieResults == null) return;
-            adapter.setMovies(movieResults.getResult());
+            mAdapter.setMovies(movieResults.getResult());
             mLastPage = movieResults.getTotal_pages();
         });
     }
@@ -341,7 +334,7 @@ public class MovieOverview extends AppCompatActivity {
         mSearchMovies = true;
         mMovieViewModel.searchMovies(mQuery, mCurrentPage).observe(MovieOverview.this, movieResults -> {
             if(movieResults == null) return;
-            adapter.setMovies(movieResults.getResult());
+            mAdapter.setMovies(movieResults.getResult());
             mLastPage = movieResults.getTotal_pages();
         });
     }
@@ -349,10 +342,10 @@ public class MovieOverview extends AppCompatActivity {
     private void setGenreFilter(){
         setInActive();
         mGenreFilter = true;
-        String filters = String.join(",", filteredGenres);
+        String filters = String.join(",", mFilteredGenres);
         mMovieViewModel.setGenreFilter(filters, mCurrentPage).observe(MovieOverview.this, movieResults -> {
             if(movieResults == null) return;
-            adapter.setMovies(movieResults.getResult());
+            mAdapter.setMovies(movieResults.getResult());
             mLastPage = movieResults.getTotal_pages();
         });
     }
@@ -360,9 +353,9 @@ public class MovieOverview extends AppCompatActivity {
     private void setRatingFilter(){
         setInActive();
         mRatingFilter = true;
-        mMovieViewModel.setRatingFilter(minRating, maxRating, mCurrentPage).observe(MovieOverview.this, movieResults -> {
+        mMovieViewModel.setRatingFilter(mMinRating, mMaxRating, mCurrentPage).observe(MovieOverview.this, movieResults -> {
             if(movieResults == null) return;
-            adapter.setMovies(movieResults.getResult());
+            mAdapter.setMovies(movieResults.getResult());
             mLastPage = movieResults.getTotal_pages();
         });
     }

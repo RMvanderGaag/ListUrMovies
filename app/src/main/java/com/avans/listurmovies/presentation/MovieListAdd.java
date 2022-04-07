@@ -5,11 +5,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.businesslogic.validation.ValidationTools;
@@ -18,7 +16,7 @@ public class MovieListAdd extends AppCompatActivity {
     private MovieListViewModel mMovieListViewModel;
     private EditText mName;
     private EditText mDescription;
-    private Button saveButton;
+    private Button mSaveButton;
     private ValidationTools mValidationTools = new ValidationTools();
 
     @Override
@@ -30,9 +28,9 @@ public class MovieListAdd extends AppCompatActivity {
 
         mName = findViewById(R.id.new_listName);
         mDescription = findViewById(R.id.new_listDescription);
-        saveButton = findViewById(R.id.saveButton);
+        mSaveButton = findViewById(R.id.saveButton);
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = mName.getText().toString();

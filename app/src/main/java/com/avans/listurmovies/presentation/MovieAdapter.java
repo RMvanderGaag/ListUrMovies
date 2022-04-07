@@ -25,7 +25,6 @@ import java.util.StringJoiner;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private final LayoutInflater mInflater;
     private List<Movie> mMovies;
-    private List<Genre> mGenres;
     private Context mContext;
 
     public MovieAdapter(Context context) {
