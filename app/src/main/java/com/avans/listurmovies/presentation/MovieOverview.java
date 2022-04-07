@@ -96,13 +96,13 @@ public class MovieOverview extends AppCompatActivity {
         mUserRepository = new UserRepository(this);
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
-
         final Observer<GenreResults> genreObserver = new Observer<GenreResults>() {
             @Override
             public void onChanged(GenreResults genreResults) {
                 genres.addAll(genreResults.getResult());
             }
         };
+
         mMovieViewModel.getGenres().observe(MovieOverview.this, genreObserver);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -130,6 +130,7 @@ public class MovieOverview extends AppCompatActivity {
                         Toast.makeText(MovieOverview.this, text, Toast.LENGTH_LONG).show();
                     }
                 }
+
                 if (id == R.id.add_movie_list) {
                     if(mUserViewModel.getUser().getValue().getId() != 0) {
                         Intent intent = new Intent(getApplicationContext(), MovieListAdd.class);
@@ -140,6 +141,7 @@ public class MovieOverview extends AppCompatActivity {
                         Toast.makeText(MovieOverview.this, text, Toast.LENGTH_LONG).show();
                     }
                 }
+
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
             }
@@ -154,8 +156,7 @@ public class MovieOverview extends AppCompatActivity {
             //Set the user image in the menu bar to the current logged in user
             Glide.with(this).load(this.getString(R.string.userImageURL) + user.getAvatarHash()).into(menu_user_image);
         });
-        //adapter.setGenres(genres);
-        //Load the default movies page
+
         loadMovies();
     }
 
@@ -173,7 +174,6 @@ public class MovieOverview extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-
         SearchManager searchManager = (SearchManager) getSystemService(this.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
                 .getActionView();
@@ -186,7 +186,6 @@ public class MovieOverview extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 filteredGenres.clear();
                 mCurrentPage = 1;
-                Log.d("submit", "onQueryTextSubmit: " + query);
                 mQuery = query;
                 loadSearchMovies();
                 return false;
@@ -194,11 +193,8 @@ public class MovieOverview extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String query) {
-                Log.d("change", "onQueryTextChange: " + query);
                 return false;
             }
-
-
         });
 
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
@@ -350,12 +346,6 @@ public class MovieOverview extends AppCompatActivity {
         });
     }
 
-    private void getGenres(){
-//        mMovieViewModel.getGenres().observe(MovieOverview.this, genreResults -> {
-//            genres.addAll(genreResults.getResult());
-//        });
-    }
-
     private void setGenreFilter(){
         setInActive();
         mGenreFilter = true;
@@ -391,7 +381,6 @@ public class MovieOverview extends AppCompatActivity {
             }
 
             mRecyclerView.scrollTo(0, mRecyclerView.getTop());
-            Toast.makeText(this, getString(R.string.current_page) + ": " + mCurrentPage, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -409,6 +398,5 @@ public class MovieOverview extends AppCompatActivity {
         }
 
         mRecyclerView.scrollTo(0, mRecyclerView.getTop());
-        Toast.makeText(this, getString(R.string.current_page) + ": " + mCurrentPage, Toast.LENGTH_SHORT).show();
     }
 }

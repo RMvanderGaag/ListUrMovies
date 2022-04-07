@@ -34,9 +34,6 @@ public class MovieListAdd extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Log.d("name", name.getText().toString());
-                Log.d("desc", description.getText().toString());
                 addList(name.getText().toString(), description.getText().toString());
 
                 setResult(Activity.RESULT_OK);
@@ -50,8 +47,4 @@ public class MovieListAdd extends AppCompatActivity {
     public void addList(String name, String description) {
         mMovieListViewModel.addList(name, description);
     }
-
-    /*private void addList(View view){
-
-    }*/
 }

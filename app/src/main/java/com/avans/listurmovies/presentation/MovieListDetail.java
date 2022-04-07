@@ -45,28 +45,11 @@ public class MovieListDetail extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-
         mMovieListViewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
 
-
-
-
         FloatingActionButton fab = findViewById(R.id.fab);
-
         MovieList movieList = (MovieList) getIntent().getSerializableExtra("List");
 
-
-        Log.d("count", String.valueOf(movieList.getItem_count()));
-        Log.d("movielist", movieList.getId());
-
-
-
-
-        /*for(Movie movie : movieList.getItems()) {
-            Log.d("movie", movie.getTitle());
-        }*/
-
-        //Log.d("")
         mMovieListViewModel.getListDetails(movieList.getId()).observe(MovieListDetail.this, listWithMovies -> {
             if(listWithMovies == null) return;
             //loadLists(mCurrentPage, user);
@@ -80,36 +63,29 @@ public class MovieListDetail extends AppCompatActivity {
 
         });
 
-        ItemTouchHelper helper = new ItemTouchHelper(new
-                                                             ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT
-                                                                     , ItemTouchHelper.LEFT) {
-                                                                 @Override
-                                                                 public boolean onMove(RecyclerView recyclerView,
-                                                                                       RecyclerView.ViewHolder viewHolder,
-                                                                                       RecyclerView.ViewHolder target) {
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT, ItemTouchHelper.LEFT) {
+             @Override
+             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                 return false;
+             }
 
-                                                                     return false;
+             @Override
+             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                 Movie currentMovie = listWithMovies.getItems().get(viewHolder.getAdapterPosition());
 
-                                                                 }
-
-                                                                 @Override
-                                                                 public void onSwiped(RecyclerView.ViewHolder viewHolder,
-                                                                                      int direction) {
-                                                                     Movie currentMovie = listWithMovies.getItems().get(viewHolder.getAdapterPosition());
-
-                                                                     mMovieListViewModel.deleteMovie(movieList.getId(), currentMovie.getId());
-                                                                     listWithMovies.getItems().remove(viewHolder.getAdapterPosition());
-                                                                     adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                 mMovieListViewModel.deleteMovie(movieList.getId(), currentMovie.getId());
+                 listWithMovies.getItems().remove(viewHolder.getAdapterPosition());
+                 adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
 
 
-                                                                 }
-                                                             });
+             }
+         });
+
         helper.attachToRecyclerView(recyclerView);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent detailList = new Intent(getApplicationContext(), MovieAdd.class);
                 detailList.putExtra("ListId", movieList.getId());
                 Log.d("listid", movieList.getId());

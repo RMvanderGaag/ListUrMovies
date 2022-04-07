@@ -27,7 +27,6 @@
     <string name="something_went_wrong">Something went wrong, try again later</string>
     <string name="successfully_rated_movie">Successfully rated the movie</string>
     <string name="minimum_maximum_rating">Enter a minimum and maximum rating value</string>
-    <string name="current_page">Current page:</string>
     <string name="login_first">Please login first</string>
     <string name="login">Login</string>
     <string name="continue_as_guest">Continue as guest</string>
@@ -37,4 +36,6 @@
     <string name="create_list">Create List</string>
     <string name="search">Search</string>
     <string name="genre">Genre</string>
+    <string name="deleted_list">Successfully deleted the list</string>
+    <string name="deleted_movie_from_list">Successfully deleted the movie from list</string>
 </resources>

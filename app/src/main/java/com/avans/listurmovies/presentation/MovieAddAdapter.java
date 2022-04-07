@@ -31,7 +31,6 @@ public class MovieAddAdapter extends RecyclerView.Adapter<MovieAddAdapter.MovieA
     public MovieAddAdapter(Context context) {
         this.mInflater = LayoutInflater.from(context);
         this.mContext = context;
-        //mMovieListViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mListRepository = new ListRepository(mContext);
 
     }
@@ -54,8 +53,6 @@ public class MovieAddAdapter extends RecyclerView.Adapter<MovieAddAdapter.MovieA
         notifyDataSetChanged();
     }
 
-    // getItemCount() is called many times, and when it is first called,
-    // mWords has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
         if (mMovies != null)
@@ -92,18 +89,7 @@ public class MovieAddAdapter extends RecyclerView.Adapter<MovieAddAdapter.MovieA
         @Override
         public void onClick(View view){
             Movie currentMovie = mMovies.get(getAdapterPosition());
-            //HashMap<String, Integer> movieData;
-            //movieData.put("media_id", currentMovie.getId());
-
-            Log.d("listid", list_id);
-            Log.d("movieid", String.valueOf(currentMovie.getId()));
             mListRepository.addMovie(list_id, currentMovie.getId());
-
-            /*Intent detailMovie = new Intent(mContext, MovieDetail.class);
-
-
-            detailMovie.putExtra("Movie", currentMovie);
-            mContext.startActivity(detailMovie);*/
         }
     }
 }

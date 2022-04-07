@@ -21,6 +21,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     private final LayoutInflater mInflater;
     private List<Review> mReviews;
     private Context mContext;
+
     SimpleDateFormat mDateFormat = new SimpleDateFormat("dd MMM yyyy");
 
     public ReviewAdapter(Context context) {
@@ -53,7 +54,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         else return 0;
     }
 
-    class ReviewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ReviewViewHolder extends RecyclerView.ViewHolder {
         private ImageView authorImage;
         private TextView authorName;
         private TextView lastUpdatedReview;
@@ -73,6 +74,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             //Author image
             String author_image = currentReview.getAuthor().getAvatar_path();
             if(author_image != null) {
+                //Author image
                 Glide.with(mContext).load(author_image.substring(1))
                         .placeholder(R.drawable.img_placeholder).error(R.drawable.img_placeholder).into(authorImage);
                 //Author name
@@ -86,11 +88,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
                 //Review contet;
                 content.setText(currentReview.getContent());
             }
-        }
-
-        @Override
-        public void onClick(View view) {
-
         }
     }
 }

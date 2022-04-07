@@ -146,13 +146,14 @@ public class MovieRepository {
 
         Rating body = new Rating(Double.parseDouble(rating));
 
+        //If user is not logged in
         if(session_id.equals("")) {
             Log.d(MovieRepository.class.getSimpleName(), "User is not logged in");
             notLoggedInToast.show();
             return;
         }
 
-        //Retrofit rate movie
+        //Rate the movie
         Call<RatingResponse> call = mService.postRating(movie_id, mContext.getResources().getString(R.string.api_key), session_id, body);
         Toast postErrorToast = Toast.makeText(mContext, R.string.something_went_wrong, Toast.LENGTH_LONG);
         Toast postSuccesToast = Toast.makeText(mContext, R.string.successfully_rated_movie, Toast.LENGTH_LONG);

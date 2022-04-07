@@ -49,13 +49,14 @@ public class MovieDetail extends AppCompatActivity {
     private ReviewViewModel mReviewViewModel;
     private MovieViewModel mMovieViewModel;
     private MovieRepository mMovieRepository = new MovieRepository(this);
-    Toast noMoreReviewsToast;
+    private Toast noMoreReviewsToast;
     private ReviewAdapter mAdapter;
-    private int mCurrentPage = 1;
-    private int mReviewsLastPage;
     private YouTubePlayerView mYouTubePlayerView;
     private NestedScrollView scrollView;
     private LinearLayout reviewRecyclerViewContainer;
+
+    private int mCurrentPage = 1;
+    private int mReviewsLastPage;
 
     private int mMovieId = 0;
     private String mMovieTitle;
@@ -70,7 +71,6 @@ public class MovieDetail extends AppCompatActivity {
 
         mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 
@@ -87,7 +87,6 @@ public class MovieDetail extends AppCompatActivity {
 
         //Get movie info
         Movie movie = (Movie) getIntent().getSerializableExtra("Movie");
-
 
         StringJoiner genres = new StringJoiner(" | ");
         genres.add(movie.getOriginal_language().toUpperCase(Locale.ROOT));
