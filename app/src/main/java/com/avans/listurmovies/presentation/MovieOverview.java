@@ -116,7 +116,7 @@ public class MovieOverview extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if(id == R.id.logout) {
-
+                    mUserRepository.logOut();
                 }
 
                 if (id == R.id.movie_lists) {
@@ -408,9 +408,5 @@ public class MovieOverview extends AppCompatActivity {
 
         mRecyclerView.scrollTo(0, mRecyclerView.getTop());
         Toast.makeText(this, "Current page: " + mCurrentPage, Toast.LENGTH_SHORT).show();
-    }
-
-    public void logout(MenuItem item) {
-        mUserRepository.logOut();
     }
 }
