@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">ListUrMovies</string>
+    <string name="action_filter">Filter</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="movieURL">https://image.tmdb.org/t/p/original</string>
+    <string name="userImageURL">https://www.gravatar.com/avatar/</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="stats">Stats:</string>
+    <string name="release_date">Release date:</string>
+    <string name="rating">Rating:</string>
+    <string name="total_ratings">Total ratings:</string>
+    <string name="rate">Rate</string>
+    <string name="reviews">Reviews</string>
+    <string name="username_error">Username cannot be empty</string>
+    <string name="password_error">Password cannot be empty</string>
+    <string name="login_toast">Username and password combination is incorrect</string>
+    <string name="username_input_hint">Username</string>
+    <string name="password_input_hint">Password</string>
+    <string name="youtube_link">https://www.youtube.com/watch?v=</string>
+    <string name="check_this_movie">Check this movie</string>
+    <string name="submit">Submit</string>
+    <string name="example_rating">8.5</string>
+    <string name="no_account"><u>No account?</u></string>
+    <string name="forgot_password"><u>Forgot password?</u></string>
+</resources>
