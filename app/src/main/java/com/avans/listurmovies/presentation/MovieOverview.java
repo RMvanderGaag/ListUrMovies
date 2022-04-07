@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.avans.listurmovies.R;
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.RequiresApi;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -97,6 +99,39 @@ public class MovieOverview extends AppCompatActivity {
         TextView menu_username = header.findViewById(R.id.menu_username);
         ImageView menu_user_image = header.findViewById(R.id.menu_user_image);
 
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if(id == R.id.logout) {
+
+                }
+
+                if (id == R.id.movie_lists) {
+                    //Log.d("user", mUserViewModel.getUser().getValue().getId());
+                    if(mUserViewModel.getUser().getValue().getId() != 0) {
+                        Intent intent = new Intent(getApplicationContext(), MovieListOverview.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(MovieOverview.this, "Please login first", Toast.LENGTH_LONG).show();
+                    }
+                }
+                if (id == R.id.add_movie_list) {
+                    if(mUserViewModel.getUser().getValue().getId() != 0) {
+                        Intent intent = new Intent(getApplicationContext(), MovieListAdd.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(MovieOverview.this, "Please login first", Toast.LENGTH_LONG).show();
+                    }
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+
         //Load user information into the menu
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         mUserViewModel.getUser().observe(MovieOverview.this, user -> {
@@ -169,7 +204,6 @@ public class MovieOverview extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.

@@ -25,6 +25,7 @@ public class UserRepository {
     private final MovieAPI mService;
     private Context mContext;
     private final MutableLiveData<User> mUser = new MutableLiveData<>();
+    private static UserRepository instance = null;
 
     public static final String SHARED_PREFS = "user";
     public static final String SESSION_ID = "session_id";
@@ -33,6 +34,19 @@ public class UserRepository {
         this.mService = RetrofitClient.getInstance().getmRepository();
         this.mContext = mContext;
     }
+
+    public UserRepository() {
+        this.mService = RetrofitClient.getInstance().getmRepository();
+
+    }
+
+    public static synchronized UserRepository getInstance() {
+        if (instance == null) {
+            instance = new UserRepository();
+        }
+        return instance;
+    }
+
 
     //Step 1: This request a request_token from the api by sending the api key with the request
     public void loginGetToken(String username, String password) {
