@@ -1,6 +1,10 @@
 package com.avans.listurmovies.dataacess.retrofit;
 
 import com.avans.listurmovies.domain.genre.GenreResults;
+import com.avans.listurmovies.domain.list.MovieData;
+import com.avans.listurmovies.domain.list.MovieList;
+import com.avans.listurmovies.domain.list.MovieListData;
+import com.avans.listurmovies.domain.list.MovieListResults;
 import com.avans.listurmovies.domain.movie.MovieResults;
 import com.avans.listurmovies.domain.movie.Rating;
 import com.avans.listurmovies.domain.movie.RatingResponse;
@@ -12,6 +16,7 @@ import com.avans.listurmovies.domain.user.UserRequestToken;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -129,5 +134,51 @@ public interface MovieAPI {
             @Path("movie_id") int movie_id,
             @Query("api_key") String api_key,
             @Query("page") int page
+    );
+
+    // ### Lists ###
+    @GET("list/{list_id}")
+    Call<MovieList> getListDetails(
+            @Path("list_id") String id,
+            @Query("api_key") String api_key,
+            @Query("language") String language
+    );
+    @GET("account/{account_id}/lists")
+    Call<MovieListResults> getAllLists(
+            @Path("account_id") int account_id,
+            @Query("api_key") String api_key,
+            @Query("language") String language,
+            @Query("session_id") String session_id,
+            @Query("page") int page
+    );
+    @POST("list")
+    Call<MovieListResults> createList(
+            @Query("api_key") String api_key,
+            @Query("session_id") String session_id,
+            @Query("language") String language,
+            @Body() MovieListData movieListData
+    );
+
+    @POST("list/{list_id}/add_item")
+    Call<MovieResults> addMovie(
+            @Path("list_id") String list_id,
+            @Query("api_key") String api_key,
+            @Query("session_id") String session_id,
+            @Body() MovieData movieData
+            );
+
+    @POST("list/{list_id}/remove_item")
+    Call<MovieResults> deleteMovie(
+            @Path("list_id") String list_id,
+            @Query("api_key") String api_key,
+            @Query("session_id") String session_id,
+            @Body() MovieData movieData
+    );
+
+    @DELETE("list/{list_id}")
+    Call<MovieListResults> deleteList(
+            @Path("list_id") String list_id,
+            @Query("api_key") String api_key,
+            @Query("session_id") String session_id
     );
 }

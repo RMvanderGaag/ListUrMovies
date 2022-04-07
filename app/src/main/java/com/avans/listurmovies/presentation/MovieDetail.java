@@ -1,9 +1,11 @@
 package com.avans.listurmovies.presentation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +28,8 @@ import android.widget.Toast;
 
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.MovieRepository;
+import com.avans.listurmovies.domain.genre.Genre;
+import com.avans.listurmovies.domain.genre.GenreResults;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.Rating;
 import com.avans.listurmovies.domain.movie.Video;
@@ -38,10 +42,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringJoiner;
 
 public class MovieDetail extends AppCompatActivity {
     private ReviewViewModel mReviewViewModel;
+    private MovieViewModel mMovieViewModel;
     private MovieRepository mMovieRepository = new MovieRepository(this);
     Toast noMoreReviewsToast;
     private ReviewAdapter mAdapter;
@@ -63,6 +69,8 @@ public class MovieDetail extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
 
         mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
+        mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 
@@ -80,13 +88,30 @@ public class MovieDetail extends AppCompatActivity {
         //Get movie info
         Movie movie = (Movie) getIntent().getSerializableExtra("Movie");
 
+
+        StringJoiner genres = new StringJoiner(" | ");
+        genres.add(movie.getOriginal_language().toUpperCase(Locale.ROOT));
+        final Observer<GenreResults> nameObserver = new Observer<GenreResults>() {
+            @Override
+            public void onChanged(GenreResults genreResults) {
+                for(int i = 0; i < movie.getGenres().length; i++){
+                    for(Genre g : genreResults.genres){
+                        if(g.getId() == movie.getGenres()[i]){
+                            genres.add(g.getName());
+                        }
+                    }
+                }
+                genre.setText(genres.toString());
+            }
+        };
+        mMovieViewModel.getGenres().observe(MovieDetail.this, nameObserver);
+
         StringJoiner genreText = new StringJoiner(" | ");
 
         mMovieId = movie.getId();
         mMovieTitle = movie.getTitle();
         String mMovieDescription = movie.getOverview();
         Date mMovieReleaseDate = movie.getRelease_date();
-        String movieGenres = getIntent().getStringExtra("Genres");
         String mMovieOriginalLanguage = movie.getOriginal_language();
         String mMoviePosterPath = movie.getPoster_path();
         String mMovieBackdropPath = movie.getBackdrop_path();
@@ -109,10 +134,6 @@ public class MovieDetail extends AppCompatActivity {
         title.setText(mMovieTitle);
         //Put language before the genres
         genreText.add(mMovieOriginalLanguage.toUpperCase());
-        //Set genres
-        genreText.add(movieGenres);
-
-        genre.setText(genreText.toString());
         //Set movie description
         description.setText(mMovieDescription);
         //Set release date

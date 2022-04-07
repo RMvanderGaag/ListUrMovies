@@ -4,15 +4,18 @@ import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.UserRepository;
 import com.avans.listurmovies.domain.genre.Genre;
+import com.avans.listurmovies.domain.genre.GenreResults;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.RequiresApi;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +28,7 @@ import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -92,10 +96,52 @@ public class MovieOverview extends AppCompatActivity {
         mUserRepository = new UserRepository(this);
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
+
+        final Observer<GenreResults> genreObserver = new Observer<GenreResults>() {
+            @Override
+            public void onChanged(GenreResults genreResults) {
+                genres.addAll(genreResults.getResult());
+            }
+        };
+        mMovieViewModel.getGenres().observe(MovieOverview.this, genreObserver);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         View header = navigationView.getHeaderView(0);
         TextView menu_username = header.findViewById(R.id.menu_username);
         ImageView menu_user_image = header.findViewById(R.id.menu_user_image);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if(id == R.id.logout) {
+
+                }
+
+                if (id == R.id.movie_lists) {
+                    //Log.d("user", mUserViewModel.getUser().getValue().getId());
+                    if(mUserViewModel.getUser().getValue().getId() != 0) {
+                        Intent intent = new Intent(getApplicationContext(), MovieListOverview.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(MovieOverview.this, "Please login first", Toast.LENGTH_LONG).show();
+                    }
+                }
+                if (id == R.id.add_movie_list) {
+                    if(mUserViewModel.getUser().getValue().getId() != 0) {
+                        Intent intent = new Intent(getApplicationContext(), MovieListAdd.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(MovieOverview.this, "Please login first", Toast.LENGTH_LONG).show();
+                    }
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
 
         //Load user information into the menu
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -106,8 +152,7 @@ public class MovieOverview extends AppCompatActivity {
             //Set the user image in the menu bar to the current logged in user
             Glide.with(this).load(this.getString(R.string.userImageURL) + user.getAvatarHash()).into(menu_user_image);
         });
-        getGenres();
-        adapter.setGenres(genres);
+        //adapter.setGenres(genres);
         //Load the default movies page
         loadMovies();
     }
@@ -169,7 +214,6 @@ public class MovieOverview extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -209,6 +253,7 @@ public class MovieOverview extends AppCompatActivity {
 
     private void showAlertBox(int id){
         if(id == R.id.filter_genre){
+
             List<String> genreNames = new ArrayList<>();
             for(Genre g : genres){
                 genreNames.add(g.getName());
@@ -304,9 +349,9 @@ public class MovieOverview extends AppCompatActivity {
     }
 
     private void getGenres(){
-        mMovieViewModel.getGenres().observe(MovieOverview.this, genreResults -> {
-            genres.addAll(genreResults.getResult());
-        });
+//        mMovieViewModel.getGenres().observe(MovieOverview.this, genreResults -> {
+//            genres.addAll(genreResults.getResult());
+//        });
     }
 
     private void setGenreFilter(){

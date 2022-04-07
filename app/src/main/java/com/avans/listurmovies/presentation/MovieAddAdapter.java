@@ -2,56 +2,56 @@ package com.avans.listurmovies.presentation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avans.listurmovies.R;
-import com.avans.listurmovies.dataacess.MovieRepository;
-import com.avans.listurmovies.domain.genre.Genre;
+import com.avans.listurmovies.dataacess.ListRepository;
 import com.avans.listurmovies.domain.movie.Movie;
-import com.avans.listurmovies.domain.movie.MovieResults;
 import com.bumptech.glide.Glide;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.StringJoiner;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
+public class MovieAddAdapter extends RecyclerView.Adapter<MovieAddAdapter.MovieAddViewHolder> {
     private final LayoutInflater mInflater;
     private List<Movie> mMovies;
-    private List<Genre> mGenres;
     private Context mContext;
+    private MovieListViewModel mMovieListViewModel;
+    private ListRepository mListRepository;
+    private String list_id;
 
-    public MovieAdapter(Context context) {
+    public MovieAddAdapter(Context context) {
         this.mInflater = LayoutInflater.from(context);
         this.mContext = context;
+        //mMovieListViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        mListRepository = new ListRepository(mContext);
+
     }
 
     @Override
-    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MovieAddViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.movie_item, parent, false);
-        return new MovieViewHolder(itemView);
+        return new MovieAddViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(MovieViewHolder holder, int position) {
-            Movie current = mMovies.get(position);
-            holder.bindTo(current);
+    public void onBindViewHolder(MovieAddViewHolder holder, int position) {
+        Movie current = mMovies.get(position);
+        holder.bindTo(current);
     }
 
-    void setMovies(List<Movie> movies){
-        mMovies = movies;
+    void setMovies(List<Movie> words, String list_id){
+        mMovies = words;
+        this.list_id = list_id;
         notifyDataSetChanged();
-    }
-
-    void setGenres(List<Genre> genres){
-        mGenres = genres;
     }
 
     // getItemCount() is called many times, and when it is first called,
@@ -63,13 +63,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         else return 0;
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class MovieAddViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView mMovieTitle;
         private ImageView mMovieImage;
         private TextView mMovieRating;
 
-        public MovieViewHolder(View itemView) {
+
+        public MovieAddViewHolder(View itemView) {
             super(itemView);
+
             mMovieTitle = itemView.findViewById(R.id.movieTitle);
             mMovieImage = itemView.findViewById(R.id.movieImage);
             mMovieRating = itemView.findViewById(R.id.movieRating);
@@ -87,14 +89,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             mMovieRating.setText("\u2605 " + currentMovie.getVote_average());
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onClick(View view){
             Movie currentMovie = mMovies.get(getAdapterPosition());
-            Intent detailMovie = new Intent(mContext, MovieDetail.class);
+            //HashMap<String, Integer> movieData;
+            //movieData.put("media_id", currentMovie.getId());
+
+            Log.d("listid", list_id);
+            Log.d("movieid", String.valueOf(currentMovie.getId()));
+            mListRepository.addMovie(list_id, currentMovie.getId());
+
+            /*Intent detailMovie = new Intent(mContext, MovieDetail.class);
+
 
             detailMovie.putExtra("Movie", currentMovie);
-            mContext.startActivity(detailMovie);
+            mContext.startActivity(detailMovie);*/
         }
     }
 }
