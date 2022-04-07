@@ -29,4 +29,6 @@
     <string name="check_this_movie">Check this movie</string>
     <string name="submit">Submit</string>
     <string name="example_rating">8.5</string>
+    <string name="no_account"><u>No account?</u></string>
+    <string name="forgot_password"><u>Forgot password?</u></string>
 </resources>
