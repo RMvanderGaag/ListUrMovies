@@ -127,14 +127,14 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:onClick="previousReviews"
-                    android:text="Prev" />
+                    android:text="@string/prev" />
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:onClick="nextReviews"
-                    android:text="Next" />
+                    android:text="@string/next" />
 
             </LinearLayout>
         </LinearLayout>

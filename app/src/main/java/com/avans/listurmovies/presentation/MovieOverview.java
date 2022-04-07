@@ -126,7 +126,8 @@ public class MovieOverview extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else {
-                        Toast.makeText(MovieOverview.this, "Please login first", Toast.LENGTH_LONG).show();
+                        String text = getString(R.string.login_first);
+                        Toast.makeText(MovieOverview.this, text, Toast.LENGTH_LONG).show();
                     }
                 }
                 if (id == R.id.add_movie_list) {
@@ -135,7 +136,8 @@ public class MovieOverview extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else {
-                        Toast.makeText(MovieOverview.this, "Please login first", Toast.LENGTH_LONG).show();
+                        String text = getString(R.string.login_first);
+                        Toast.makeText(MovieOverview.this, text, Toast.LENGTH_LONG).show();
                     }
                 }
                 drawer.closeDrawer(GravityCompat.START);
@@ -263,7 +265,7 @@ public class MovieOverview extends AppCompatActivity {
 
 
             AlertDialog dialog = new AlertDialog.Builder(this)
-            .setTitle("Filter")
+            .setTitle(R.string.action_filter)
             .setMultiChoiceItems(genreArray, null, new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int position, boolean checked) {
@@ -300,8 +302,8 @@ public class MovieOverview extends AppCompatActivity {
             linearLayout.addView(maxVal);
 
             AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setTitle("Filter")
-                    .setMessage("Enter a minimum and maximum rating value")
+                    .setTitle(R.string.action_filter)
+                    .setMessage(R.string.minimum_maximum_rating)
                     .setView(linearLayout)
                     .setPositiveButton(android.R.string.yes, null)
                     .setNegativeButton(android.R.string.no, null)
@@ -389,7 +391,7 @@ public class MovieOverview extends AppCompatActivity {
             }
 
             mRecyclerView.scrollTo(0, mRecyclerView.getTop());
-            Toast.makeText(this, "Current page: " + mCurrentPage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.current_page) + ": " + mCurrentPage, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -407,6 +409,6 @@ public class MovieOverview extends AppCompatActivity {
         }
 
         mRecyclerView.scrollTo(0, mRecyclerView.getTop());
-        Toast.makeText(this, "Current page: " + mCurrentPage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.current_page) + ": " + mCurrentPage, Toast.LENGTH_SHORT).show();
     }
 }

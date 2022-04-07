@@ -166,6 +166,7 @@ public class MovieRepository {
     }
 
     public void rateMovie(int movie_id, String rating) {
+        Toast notLoggedInToast = Toast.makeText(mContext, "Please login first", Toast.LENGTH_LONG);
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(UserRepository.SHARED_PREFS, Context.MODE_PRIVATE);
         String session_id = sharedPreferences.getString(UserRepository.SESSION_ID, "");
 
@@ -173,13 +174,14 @@ public class MovieRepository {
 
         if(session_id.equals("")) {
             Log.d(MovieRepository.class.getSimpleName(), "User is not logged in");
+            notLoggedInToast.show();
             return;
         }
 
         //Retrofit rate movie
         Call<RatingResponse> call = mService.postRating(movie_id, mContext.getResources().getString(R.string.api_key), session_id, body);
-        Toast postErrorToast = Toast.makeText(mContext, "Something went wrong, try again later", Toast.LENGTH_LONG);
-        Toast postSuccesToast = Toast.makeText(mContext, "Successfully rated the movie", Toast.LENGTH_LONG);
+        Toast postErrorToast = Toast.makeText(mContext, R.string.something_went_wrong, Toast.LENGTH_LONG);
+        Toast postSuccesToast = Toast.makeText(mContext, R.string.successfully_rated_movie, Toast.LENGTH_LONG);
 
         call.enqueue(new Callback<RatingResponse>() {
             @Override
