@@ -43,4 +43,5 @@
     <string name="list_details">List details</string>
     <string name="list">List</string>
     <string name="movie_details">Movie details</string>
+    <string name="input_field_error">This field cannot be empty</string>
 </resources>
