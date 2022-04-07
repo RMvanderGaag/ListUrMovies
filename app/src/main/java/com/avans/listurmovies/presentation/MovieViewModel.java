@@ -1,4 +1,4 @@
-package com.avans.listurmovies.dataacess;
+package com.avans.listurmovies.presentation;
 
 import android.app.Application;
 
@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.avans.listurmovies.R;
+import com.avans.listurmovies.dataacess.MovieRepository;
 import com.avans.listurmovies.domain.genre.GenreResults;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.MovieResults;
@@ -22,13 +23,14 @@ public class MovieViewModel extends AndroidViewModel {
     public MutableLiveData<MovieResults> getMovies(int page, int filter) {
         if(filter == R.id.popular_movies){
             return mRepository.getPopularMovies(page);
-        }else if(filter == R.id.now_playing){
+        } else if(filter == R.id.now_playing){
             return mRepository.getNowPlayingMovies(page);
-        }else if(filter == R.id.top_rated){
+        } else if(filter == R.id.top_rated){
             return mRepository.getTopRatedMovies(page);
-        }else if(filter == R.id.upcoming){
+        } else if(filter == R.id.upcoming){
             return mRepository.getUpcomingMovies(page);
         }
+
         return null;
     }
     public MutableLiveData<MovieResults> searchMovies(String query, int page) {

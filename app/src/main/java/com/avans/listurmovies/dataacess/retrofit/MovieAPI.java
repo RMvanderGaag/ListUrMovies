@@ -2,6 +2,8 @@ package com.avans.listurmovies.dataacess.retrofit;
 
 import com.avans.listurmovies.domain.genre.GenreResults;
 import com.avans.listurmovies.domain.movie.MovieResults;
+import com.avans.listurmovies.domain.movie.Rating;
+import com.avans.listurmovies.domain.movie.RatingResponse;
 import com.avans.listurmovies.domain.movie.VideoResult;
 import com.avans.listurmovies.domain.review.ReviewResults;
 import com.avans.listurmovies.domain.user.User;
@@ -110,6 +112,15 @@ public interface MovieAPI {
             @Path("movie_id") int movie_id,
             @Query("api_key") String api_key,
             @Query("language") String language
+    );
+
+    //Rate movie
+    @POST("movie/{movie_id}/rating")
+    Call<RatingResponse> postRating(
+            @Path("movie_id") int movie_id,
+            @Query("api_key") String api_key,
+            @Query("session_id") String session_id,
+            @Body() Rating rating
     );
 
     // ### Reviews ###
