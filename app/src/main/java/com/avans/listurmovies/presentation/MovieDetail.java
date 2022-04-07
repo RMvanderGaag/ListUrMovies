@@ -3,6 +3,7 @@ package com.avans.listurmovies.presentation;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,17 +80,16 @@ public class MovieDetail extends AppCompatActivity {
         //Get movie info
         Movie movie = (Movie) getIntent().getSerializableExtra("Movie");
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         StringJoiner genreText = new StringJoiner(" | ");
 
         mMovieId = movie.getId();
-        String movieTitle = movie.getTitle();
-        String movieDescription = movie.getOverview();
-        Date movieReleaseDate = movie.getRelease_date();
+        mMovieTitle = movie.getTitle();
+        String mMovieDescription = movie.getOverview();
+        Date mMovieReleaseDate = movie.getRelease_date();
         String movieGenres = getIntent().getStringExtra("Genres");
-        String movieOriginalLanguage = movie.getOriginal_language();
-        String moviePosterPath = movie.getPoster_path();
-        String movieBackdropPath = movie.getBackdrop_path();
+        String mMovieOriginalLanguage = movie.getOriginal_language();
+        String mMoviePosterPath = movie.getPoster_path();
+        String mMovieBackdropPath = movie.getBackdrop_path();
 
         //Stats
         mMovieVoteAverage = movie.getVote_average();
