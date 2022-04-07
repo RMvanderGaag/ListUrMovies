@@ -9,7 +9,10 @@
             android:title="Overview" />
         <item
             android:id="@+id/movie_lists"
-            android:title="Lists" />
+            android:title="Movie lists" />
+        <item
+            android:id="@+id/add_movie_list"
+            android:title="Add movieList" />
     </group>
 
     <item android:title="Other">

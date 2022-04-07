@@ -1,12 +1,14 @@
 package com.avans.listurmovies.presentation;
 
 import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.avans.listurmovies.R;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -64,6 +66,39 @@ public class MovieOverview extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);
         TextView menu_username = header.findViewById(R.id.menu_username);
         ImageView menu_user_image = header.findViewById(R.id.menu_user_image);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if(id == R.id.logout) {
+
+                }
+
+                if (id == R.id.movie_lists) {
+                    //Log.d("user", mUserViewModel.getUser().getValue().getId());
+                    if(mUserViewModel.getUser().getValue().getId() != 0) {
+                        Intent intent = new Intent(getApplicationContext(), MovieListOverview.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(MovieOverview.this, "Please login first", Toast.LENGTH_LONG).show();
+                    }
+                }
+                if (id == R.id.add_movie_list) {
+                    if(mUserViewModel.getUser().getValue().getId() != 0) {
+                        Intent intent = new Intent(getApplicationContext(), MovieListAdd.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(MovieOverview.this, "Please login first", Toast.LENGTH_LONG).show();
+                    }
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
 
         //Load user information into the menu
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -132,6 +167,8 @@ public class MovieOverview extends AppCompatActivity {
         return true;
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -143,10 +180,6 @@ public class MovieOverview extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         switch (id) {
             case R.id.now_playing:
