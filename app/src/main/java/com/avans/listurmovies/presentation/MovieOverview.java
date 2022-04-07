@@ -101,6 +101,7 @@ public class MovieOverview extends AppCompatActivity {
             Glide.with(this).load(this.getString(R.string.userImageURL) + user.getAvatarHash()).into(menu_user_image);
         });
         getGenres();
+        adapter.setGenres(genres);
         //Load the default movies page
         loadMovies();
     }
@@ -118,6 +119,7 @@ public class MovieOverview extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
 
         SearchManager searchManager = (SearchManager) getSystemService(this.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
@@ -209,8 +211,7 @@ public class MovieOverview extends AppCompatActivity {
 
 
             AlertDialog dialog = new AlertDialog.Builder(this)
-            .setTitle("filter")
-
+            .setTitle("Filter")
             .setMultiChoiceItems(genreArray, null, new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int position, boolean checked) {
@@ -247,7 +248,8 @@ public class MovieOverview extends AppCompatActivity {
             linearLayout.addView(maxVal);
 
             AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setTitle("filter")
+                    .setTitle("Filter")
+                    .setMessage("Enter a minimum and maximum rating value")
                     .setView(linearLayout)
                     .setPositiveButton(android.R.string.yes, null)
                     .setNegativeButton(android.R.string.no, null)

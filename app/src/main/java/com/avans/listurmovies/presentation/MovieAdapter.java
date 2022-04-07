@@ -2,23 +2,28 @@ package com.avans.listurmovies.presentation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avans.listurmovies.R;
+import com.avans.listurmovies.domain.genre.Genre;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private final LayoutInflater mInflater;
     private List<Movie> mMovies;
+    private List<Genre> mGenres;
     private Context mContext;
 
     public MovieAdapter(Context context) {
@@ -38,9 +43,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             holder.bindTo(current);
     }
 
-    void setMovies(List<Movie> words){
-        mMovies = words;
+    void setMovies(List<Movie> movies){
+        mMovies = movies;
         notifyDataSetChanged();
+    }
+
+    void setGenres(List<Genre> genres){
+        mGenres = genres;
     }
 
     // getItemCount() is called many times, and when it is first called,
@@ -76,12 +85,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             mMovieRating.setText("\u2605 " + currentMovie.getVote_average());
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onClick(View view){
             Movie currentMovie = mMovies.get(getAdapterPosition());
             Intent detailMovie = new Intent(mContext, MovieDetail.class);
 
+            StringJoiner genres = new StringJoiner(" | ");
+            for(int i = 0; i < currentMovie.getGenres().length; i++){
+                for(Genre g : mGenres){
+                    if(g.getId() == currentMovie.getGenres()[i]){
+                        genres.add(g.getName());
+                    }
+                }
+            }
+
             detailMovie.putExtra("Movie", currentMovie);
+            detailMovie.putExtra("Genres", genres.toString());
             mContext.startActivity(detailMovie);
         }
     }
