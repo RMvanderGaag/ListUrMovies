@@ -49,7 +49,4 @@ public class MovieViewModel extends AndroidViewModel {
         return mRepository.getGenres();
     }
 
-
-    public void insert(Movie movie) { mRepository.insert(movie); }
-
 }

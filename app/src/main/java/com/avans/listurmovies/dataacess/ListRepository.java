@@ -12,8 +12,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.retrofit.MovieAPI;
 import com.avans.listurmovies.dataacess.retrofit.RetrofitClient;
-import com.avans.listurmovies.dataacess.room.MovieDAO;
-import com.avans.listurmovies.dataacess.room.MovieRoomDatabase;
 import com.avans.listurmovies.domain.list.MovieData;
 import com.avans.listurmovies.domain.list.MovieList;
 import com.avans.listurmovies.domain.list.MovieListData;
@@ -31,7 +29,6 @@ public class ListRepository {
 
     private final MovieAPI mService;
     private Context mContext;
-    private MovieDAO mMovieDAO;
     private UserRepository mUserRepository = UserRepository.getInstance();
 
     private final MutableLiveData<MovieListResults> listOfLists = new MutableLiveData<MovieListResults>();
@@ -44,9 +41,6 @@ public class ListRepository {
     public ListRepository(Context context) {
         this.mService = RetrofitClient.getInstance().getmRepository();
         this.mContext = context;
-
-        MovieRoomDatabase db = MovieRoomDatabase.getDatabase(context);
-        mMovieDAO = db.movieDAO();;
     }
 
     public MutableLiveData<MovieListResults> getAllLists(int page, User userinfo) {
