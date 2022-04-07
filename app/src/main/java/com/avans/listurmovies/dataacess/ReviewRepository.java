@@ -25,7 +25,7 @@ public class ReviewRepository {
     }
 
     public MutableLiveData<ReviewResults> getAllReviewsById(int movieId, int currentPage) {
-        Call<ReviewResults> call = mService.getAllReviewsByPage(movieId, mContext.getResources().getString(R.string.api_key), MovieRepository.LANGUAGE, currentPage);
+        Call<ReviewResults> call = mService.getAllReviewsByPage(movieId, mContext.getResources().getString(R.string.api_key), currentPage);
         Log.d(ReviewRepository.class.getSimpleName(), "MovieId: " + movieId + ", language: " + MovieRepository.LANGUAGE + ", currentpage: " + currentPage);
 
         call.enqueue(new Callback<ReviewResults>() {
@@ -33,6 +33,7 @@ public class ReviewRepository {
             public void onResponse(Call<ReviewResults> call, Response<ReviewResults> response) {
                 if(response.code() == 200) {
                     mReviews.setValue(response.body());
+                    Log.d("Response: ", response.body().getTotal_results() + "");
                 } else {
                     Log.e(UserRepository.class.getSimpleName(), "Something went wrong when retrieving the reviews: \n"
                             + "Response code: " + response.code() + "\n"

@@ -1,10 +1,14 @@
 package com.avans.listurmovies.dataacess.retrofit;
 
+import com.avans.listurmovies.domain.genre.GenreResults;
 import com.avans.listurmovies.domain.movie.MovieResults;
+import com.avans.listurmovies.domain.movie.Rating;
+import com.avans.listurmovies.domain.movie.RatingResponse;
+import com.avans.listurmovies.domain.movie.VideoResult;
 import com.avans.listurmovies.domain.review.ReviewResults;
 import com.avans.listurmovies.domain.user.User;
-import com.avans.listurmovies.domain.user.retrofit.PostUser;
-import com.avans.listurmovies.domain.user.retrofit.UserRequestToken;
+import com.avans.listurmovies.domain.user.PostUser;
+import com.avans.listurmovies.domain.user.UserRequestToken;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -80,12 +84,50 @@ public interface MovieAPI {
             @Query("page") int page
     );
 
+    @GET("genre/movie/list")
+    Call<GenreResults> getGenres(
+            @Query("api_key") String api_key,
+            @Query("language") String language
+    );
+
+    @GET("discover/movie")
+    Call<MovieResults> setGenreFilter(
+          @Query("api_key") String api_key,
+          @Query("language") String language,
+          @Query("page") int page,
+          @Query("with_genres") String genres
+    );
+
+    @GET("discover/movie")
+    Call<MovieResults> setRatingFilter(
+            @Query("api_key") String api_key,
+            @Query("language") String language,
+            @Query("page") int page,
+            @Query("vote_average.gte") Number min,
+            @Query("vote_average.lte") Number max
+    );
+
+    @GET("movie/{movie_id}/videos")
+    Call<VideoResult> getTrailer(
+            @Path("movie_id") int movie_id,
+            @Query("api_key") String api_key,
+            @Query("language") String language
+    );
+
+    //Rate movie
+    @POST("movie/{movie_id}/rating")
+    Call<RatingResponse> postRating(
+            @Path("movie_id") int movie_id,
+            @Query("api_key") String api_key,
+            @Query("session_id") String session_id,
+            @Body() Rating rating
+    );
+
     // ### Reviews ###
     @GET("movie/{movie_id}/reviews")
     Call<ReviewResults> getAllReviewsByPage(
-            @Path("movie_id") int id,
+            @Path("movie_id") int movie_id,
             @Query("api_key") String api_key,
-            @Query("language") String language,
             @Query("page") int page
     );
 }

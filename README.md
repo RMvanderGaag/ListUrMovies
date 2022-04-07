@@ -6,7 +6,7 @@
 
 - Search for movies
 - Read detailed information about each movie
-- Watch trailers
+- Watch videos
 - Make lists of your favorite movies and save them for later
 - Rate movies
 - Filter on popularity, genre, rating etc.

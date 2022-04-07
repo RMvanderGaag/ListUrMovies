@@ -1,7 +1,5 @@
 package com.avans.listurmovies.domain.user;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Map;
 
 public class User {
