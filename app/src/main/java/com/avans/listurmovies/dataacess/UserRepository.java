@@ -113,7 +113,7 @@ public class UserRepository {
                 if(response.code() == 200) {
                     UserRequestToken result = response.body();
 
-                    //Save the session_id in the sharedpreference
+                    //Save the session_id in the shared preference
                     SharedPreferences sharedPref = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString(SESSION_ID, result.getSession_id());
@@ -138,11 +138,10 @@ public class UserRepository {
     public MutableLiveData<User> getUserInfo() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         String session_id = sharedPreferences.getString(SESSION_ID, null);
-//        sharedPreferences.edit().remove(SESSION_ID).commit();
         String api_key = mContext.getResources().getString(R.string.api_key);
 
         if(session_id != null) {
-            //Logged in
+            //User is logged in
             Call<User> call = mService.getUserDetails(api_key, session_id);
 
             call.enqueue(new Callback<User>() {
@@ -164,7 +163,7 @@ public class UserRepository {
                 }
             });
         } else {
-            User guest = new User(0, "Guest", null, false);
+            User guest = new User(0, "Guest", null);
             mUser.setValue(guest);
         }
 

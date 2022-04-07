@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ListUrMovies</string>
+    <string name="action_filter">Filter</string>
+    <string name="next">Volgende</string>
+    <string name="previous">Vorige</string>
+    <string name="navigation_drawer_open">Open navigatie menu</string>
+    <string name="navigation_drawer_close">Open navigatie menu</string>
+    <string name="stats">Statistieken:</string>
+    <string name="release_date">Uitgave datum:</string>
+    <string name="rating">Beoordeling:</string>
+    <string name="total_ratings">Totaal aantal beoordelingen</string>
+    <string name="reviews">Beoordelingen</string>
+    <string name="username_error">Gebruikersnaam kan niet leeg zijn</string>
+    <string name="password_error">Wachtwoord kan niet leeg zijn</string>
+    <string name="login_toast">Gebruikersnaam en/of wachtwoord is niet correct</string>
+    <string name="username_input_hint">Gebruikersnaam</string>
+    <string name="password_input_hint">Wachtwoord</string>
+    <string name="check_this_movie">Bekijk deze film</string>
+    <string name="submit">Opslaan</string>
+    <string name="rate">Beoordelen</string>
+    <string name="no_account"><u>Geen account?</u></string>
+    <string name="forgot_password"><u>Wachtwoord vergeten?</u></string>
+    <string name="something_went_wrong">Er is iets fout gegaan, probeer het later opnieuw</string>
+    <string name="successfully_rated_movie">De film is succesvol beoordeeld</string>
+    <string name="minimum_maximum_rating">Voor een minimum en maximum beoordeling in</string>
+    <string name="login_first">Log eerst in</string>
+    <string name="login">Login</string>
+    <string name="continue_as_guest">Ga door als gast</string>
+    <string name="prev">Vorige</string>
+    <string name="name">Naam</string>
+    <string name="description">Beschrijving</string>
+    <string name="create_list">Lijst aanmaken</string>
+    <string name="search">Zoeken</string>
+    <string name="genre">Genre</string>
+    <string name="deleted_list">De lijst is succesvol verwijderd</string>
+    <string name="deleted_movie_from_list">De filmt is succesvol verwijderd uit de lijst</string>
+    <string name="add_movie">Film toevoegen</string>
+    <string name="add_list">Lijst toevoegen</string>
+    <string name="list_details">Lijst details</string>
+    <string name="list">Lijst</string>
+    <string name="movie_details">Film details</string>
+</resources>

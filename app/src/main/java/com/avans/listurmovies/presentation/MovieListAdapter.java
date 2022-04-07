@@ -42,8 +42,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.List
         notifyDataSetChanged();
     }
 
-    // getItemCount() is called many times, and when it is first called,
-    // mWords has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
         if (mMovieList != null)
@@ -54,15 +52,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.List
     class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView mListTitle;
         private TextView mListDescription;
-        private ImageView mMovieImage;
-        private TextView mMovieRating;
 
         public ListViewHolder(View itemView) {
             super(itemView);
             mListTitle = itemView.findViewById(R.id.movielistName);
             mListDescription = itemView.findViewById(R.id.movielistDescription);
-           // mMovieImage = itemView.findViewById(R.id.movieImage);
-           // mMovieRating = itemView.findViewById(R.id.movieRating);
 
             itemView.setOnClickListener(this);
         }
@@ -70,12 +64,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.List
         public void bindTo(MovieList currentMovieList) {
             //Title
             mListTitle.setText(currentMovieList.getName());
+            //Description
             mListDescription.setText(currentMovieList.getDescription());
-
-            //Image
-            //Glide.with(mContext).load(mContext.getString(R.string.movieURL) + currentList.getPoster_path())
-                    //.placeholder(R.drawable.img_placeholder).error(R.drawable.img_error).into(mMovieImage);
-            //mMovieRating.setText("\u2605 " + currentList.getVote_average());
         }
 
         @Override

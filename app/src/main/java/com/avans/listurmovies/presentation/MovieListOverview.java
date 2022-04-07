@@ -35,10 +35,9 @@ public class MovieListOverview extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         mMovieListViewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
+
         mUserViewModel.getUser().observe(MovieListOverview.this, user -> {
             if(user == null) return;
             mMovieListViewModel.getLists(mCurrentPage, user).observe(this, listResults -> {
@@ -46,66 +45,27 @@ public class MovieListOverview extends AppCompatActivity {
                 this.listResults = listResults;
                 adapter.setLists(listResults.getResults());
                 mLastPage = listResults.getTotal_pages();
-                for(MovieList movieList : listResults.getResults()) {
-                    Log.d("list", movieList.getId());
-                    Log.d("list", movieList.getName());
-                    Log.d("list", movieList.getDescription());
-
-                }
             });
 
         });
 
-        ItemTouchHelper helper = new ItemTouchHelper(new
-                                                             ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT
-                                                                     , ItemTouchHelper.LEFT) {
-                                                                 @Override
-                                                                 public boolean onMove(RecyclerView recyclerView,
-                                                                                       RecyclerView.ViewHolder viewHolder,
-                                                                                       RecyclerView.ViewHolder target) {
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT, ItemTouchHelper.LEFT) {
+             @Override
+             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                 return false;
+             }
 
-                                                                     return false;
-
-                                                                 }
-
-                                                                 @Override
-                                                                 public void onSwiped(RecyclerView.ViewHolder viewHolder,
-                                                                                      int direction) {
-                                                                     MovieList currentList = listResults.getResults().get(viewHolder.getAdapterPosition());
-                                                                     //Movie currentMovie = listWithMovies.getItems().get(viewHolder.getAdapterPosition());
-                                                                     Log.d("listid", currentList.getId());
-                                                                     mMovieListViewModel.deleteList(currentList.getId());
-                                                                     listResults.getResults().remove(viewHolder.getAdapterPosition());
-                                                                     adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+             @Override
+             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                 MovieList currentList = listResults.getResults().get(viewHolder.getAdapterPosition());
+                 mMovieListViewModel.deleteList(currentList.getId());
+                 listResults.getResults().remove(viewHolder.getAdapterPosition());
+                 adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
 
 
-                                                                 }
-                                                             });
+             }
+         });
+
         helper.attachToRecyclerView(recyclerView);
-
-
-
     }
-
-
-
-    /*private void loadLists(int mCurrentPage, User userinfo){
-
-        mMovieListViewModel.getLists(mCurrentPage, userinfo).observe(this, listResults -> {
-            if(listResults == null) return;
-            adapter.setLists(listResults.getResults());
-            mLastPage = listResults.getTotal_pages();
-            for(MovieList movieList : listResults.getResults()) {
-                Log.d("list", movieList.getId());
-                Log.d("list", movieList.getName());
-                Log.d("list", movieList.getDescription());
-
-            }
-        });
-
-
-
-    }*/
-
-
 }

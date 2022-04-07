@@ -75,8 +75,6 @@ public class MovieAdd extends AppCompatActivity {
                 Log.d("change", "onQueryTextChange: " + query);
                 return false;
             }
-
-
         });
 
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
@@ -95,16 +93,11 @@ public class MovieAdd extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // automatically handle clicks on the Home/Up button
 
         //Set page to 1
         mCurrentPage = 1;
-
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
 
         switch (id) {
             case R.id.now_playing:

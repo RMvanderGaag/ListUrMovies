@@ -1,17 +1,10 @@
 <resources>
     <string name="app_name">ListUrMovies</string>
     <string name="action_filter">Filter</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="movieURL">https://image.tmdb.org/t/p/original</string>
-    <string name="userImageURL">https://www.gravatar.com/avatar/</string>
-
+    <string name="movieURL" translatable="false">https://image.tmdb.org/t/p/original</string>
+    <string name="userImageURL" translatable="false">https://www.gravatar.com/avatar/</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="stats">Stats:</string>
@@ -25,11 +18,30 @@
     <string name="login_toast">Username and password combination is incorrect</string>
     <string name="username_input_hint">Username</string>
     <string name="password_input_hint">Password</string>
-    <string name="youtube_link">https://www.youtube.com/watch?v=</string>
+    <string name="youtube_link" translatable="false">https://www.youtube.com/watch?v=</string>
     <string name="check_this_movie">Check this movie</string>
     <string name="submit">Submit</string>
-    <string name="example_rating">8.5</string>
+    <string name="example_rating" translatable="false">8.5</string>
     <string name="no_account"><u>No account?</u></string>
     <string name="forgot_password"><u>Forgot password?</u></string>
+    <string name="something_went_wrong">Something went wrong, try again later</string>
+    <string name="successfully_rated_movie">Successfully rated the movie</string>
+    <string name="minimum_maximum_rating">Enter a minimum and maximum rating value</string>
+    <string name="login_first">Please login first</string>
+    <string name="login">Login</string>
+    <string name="continue_as_guest">Continue as guest</string>
+    <string name="prev">Prev</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="create_list">Create List</string>
+    <string name="search">Search</string>
+    <string name="genre">Genre</string>
+    <string name="deleted_list">Successfully deleted the list</string>
+    <string name="deleted_movie_from_list">Successfully deleted the movie from list</string>
+    <string name="add_movie">Add movie</string>
+    <string name="add_list">Add list</string>
+    <string name="list_details">List details</string>
+    <string name="list">List</string>
+    <string name="movie_details">Movie details</string>
     <string name="input_field_error">This field cannot be empty</string>
 </resources>

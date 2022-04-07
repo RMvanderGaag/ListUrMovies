@@ -37,11 +37,7 @@ public class MovieListAdd extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = mName.getText().toString();
-                String description = mDescription.getText().toString();
-
-                Log.d("name", mName.getText().toString());
-                Log.d("desc", mDescription.getText().toString());
+                addList(name.getText().toString(), description.getText().toString());
 
                 if (mValidationTools.isInputFieldEmpty(name)) {
                     mName.setError(getText(R.string.input_field_error));
@@ -64,8 +60,4 @@ public class MovieListAdd extends AppCompatActivity {
     public void addList(String name, String description) {
         mMovieListViewModel.addList(name, description);
     }
-
-    /*private void addList(View view){
-
-    }*/
 }
