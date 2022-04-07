@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -73,6 +74,7 @@ public class UserRepository {
                             + "with request token: " + result.getRequest_token() + "\n");
                 } else {
                     Log.d(UserRepository.class.getSimpleName(), "username or password is invalid");
+                    Toast.makeText(mContext, R.string.login_toast, Toast.LENGTH_LONG).show();
                     Log.e(UserRepository.class.getSimpleName(), "Something went wrong with validating the request_token: \n"
                             + "Response code: " + response.code() + "\n"
                             + "Response body: " + response.body());
