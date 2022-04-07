@@ -15,7 +15,6 @@ import com.avans.listurmovies.R;
 import com.avans.listurmovies.businesslogic.validation.ValidationTools;
 
 public class MovieListAdd extends AppCompatActivity {
-
     private MovieListViewModel mMovieListViewModel;
     private EditText mName;
     private EditText mDescription;
@@ -33,11 +32,11 @@ public class MovieListAdd extends AppCompatActivity {
         mDescription = findViewById(R.id.new_listDescription);
         saveButton = findViewById(R.id.saveButton);
 
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addList(name.getText().toString(), description.getText().toString());
+                String name = mName.getText().toString();
+                String description = mDescription.getText().toString();
 
                 if (mValidationTools.isInputFieldEmpty(name)) {
                     mName.setError(getText(R.string.input_field_error));
