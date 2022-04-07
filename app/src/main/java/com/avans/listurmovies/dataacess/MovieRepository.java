@@ -115,7 +115,7 @@ public class MovieRepository {
     }
 
     public MutableLiveData<VideoResult> getMovieVideos(int movieId) {
-        Call<VideoResult> call = mService.getTrailer(movieId, mContext.getResources().getString(R.string.api_key), LANGUAGE);
+        Call<VideoResult> call = mService.getTrailer(movieId, mContext.getResources().getString(R.string.api_key));
 
         call.enqueue(new Callback<VideoResult>() {
             @Override
