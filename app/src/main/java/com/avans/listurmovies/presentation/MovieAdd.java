@@ -31,15 +31,14 @@ import java.util.List;
 public class MovieAdd extends AppCompatActivity {
 
     private int mCurrentPage = 1;
-    private int mLastPage = 1;
+    private int mLastPage = 10;
     private MovieAddAdapter adapter;
     private String mQuery = "";
-    private int filter = R.id.popular_movies;
+    private int filter = R.id.now_playing;
     private MovieViewModel mMovieViewModel;
     private String listid;
     private int minRating;
     private int maxRating;
-    private int sort = R.id.popular_movies;
 
     private Boolean mLoadMovies = true;
     private Boolean mGenreFilter = false;
