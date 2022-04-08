@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.ListRepository;
+import com.avans.listurmovies.domain.list.MovieList;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.bumptech.glide.Glide;
 
@@ -88,7 +89,12 @@ public class MovieAddAdapter extends RecyclerView.Adapter<MovieAddAdapter.MovieA
         @Override
         public void onClick(View view){
             Movie currentMovie = mMovies.get(getAdapterPosition());
+
             mListRepository.addMovie(list_id, currentMovie.getId());
+
+            Intent detailMovie = new Intent(mContext, MovieListOverview.class);
+
+            mContext.startActivity(detailMovie);
         }
     }
 }

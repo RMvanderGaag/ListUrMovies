@@ -40,4 +40,6 @@
     <string name="list_details">Lijst details</string>
     <string name="list">Lijst</string>
     <string name="movie_details">Film details</string>
+    <string name="input_field_error">Dit veld kan niet leeg zijn</string>
+    <string name="added_list">Lijst succesvol toegevoegd</string>
 </resources>

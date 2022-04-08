@@ -85,6 +85,27 @@ public class ListRepository {
 
         Call<MovieListResults> call = mService.createList(mContext.getResources().getString(R.string.api_key), session_id, LANGUAGE, body);
         apiCall(call);
+
+        call.enqueue(new Callback<MovieListResults>() {
+            @Override
+            public void onResponse(Call<MovieListResults> call, Response<MovieListResults> response) {
+                if(response.code() == 201) {
+                    mListOfLists.setValue(response.body());
+                    Toast deletedMovieFromListToast = Toast.makeText(mContext, R.string.added_list, Toast.LENGTH_LONG);
+                    deletedMovieFromListToast.show();
+                } else {
+                    Log.e(UserRepository.class.getSimpleName(), "Something went wrong when retrieving the reviews: \n"
+                            + "Response code: " + response.code() + "\n"
+                            + "Response body: " + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieListResults> call, Throwable t) {
+                Log.e(UserRepository.class.getSimpleName(), "Something went wrong when starting the request to retrieve the reviews");
+            }
+        });
+
     }
 
     public void addMovie(String list_id, int movieId) {
@@ -111,6 +132,7 @@ public class ListRepository {
                 Log.e(UserRepository.class.getSimpleName(), "Something went wrong when starting the request to retrieve the reviews");
             }
         });
+
     }
 
     public void deleteMovie(String list_id, int movieId) {

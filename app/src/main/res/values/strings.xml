@@ -2,6 +2,7 @@
     <string name="app_name">ListUrMovies</string>
     <string name="action_filter">Filter</string>
     <string name="next">Next</string>
+    <string name="api_key" translatable="false">eb0e7a8f99439c130f817c8221a6f4ed</string>
     <string name="previous">Previous</string>
     <string name="movieURL" translatable="false">https://image.tmdb.org/t/p/original</string>
     <string name="userImageURL" translatable="false">https://www.gravatar.com/avatar/</string>
@@ -44,4 +45,5 @@
     <string name="list">List</string>
     <string name="movie_details">Movie details</string>
     <string name="input_field_error">This field cannot be empty</string>
+    <string name="added_list">Succesfully added list</string>
 </resources>
