@@ -45,9 +45,9 @@ public class MovieOverview extends AppCompatActivity {
     private UserViewModel mUserViewModel;
     private MovieViewModel mMovieViewModel;
     private int mCurrentPage = 1;
-    private int mLastPage = 1;
+    private int mLastPage = 10;
     private MovieAdapter mAdapter;
-    private int mSort = R.id.popular_movies;
+    private int mSort = R.id.now_playing;
     private DrawerLayout mDrawer;
 
     private String mQuery = "";
