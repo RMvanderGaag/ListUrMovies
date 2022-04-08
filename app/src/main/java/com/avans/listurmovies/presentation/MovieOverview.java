@@ -148,6 +148,10 @@ public class MovieOverview extends AppCompatActivity {
             menu_username.setText(user.getUsername());
             //Set the user image in the menu bar to the current logged in user
             Glide.with(this).load(this.getString(R.string.userImageURL) + user.getAvatarHash()).into(menu_user_image);
+
+            if(user.getId() == 0) {
+                navigationView.getMenu().findItem(R.id.logout).setTitle(R.string.login);
+            }
         });
 
         loadMovies();
