@@ -11,10 +11,6 @@ public class VideoResult {
         this.results = results;
     }
 
-    public int getMovieId() {
-        return movieId;
-    }
-
     public List<Video> getResults() {
         return results;
     }

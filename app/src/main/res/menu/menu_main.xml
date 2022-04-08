@@ -11,21 +11,19 @@
         <menu>
             <item
                 android:id="@+id/filter_genre"
-                android:title="Genre"/>
+                android:title="@string/genre"/>
             <item
                 android:id="@+id/filter_rating"
-                android:title="Rating"/>
+                android:title="@string/rating"/>
         </menu>
     </item>
-
-
 
     <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_action_sort"
         android:orderInCategory="50"
         android:title="Sort"
-        app:showAsAction="always" >
+        app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/popular_movies"
@@ -46,7 +44,7 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_launcher_background"
         android:orderInCategory="0"
-        android:title="Search"
+        android:title="@string/search"
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView" />
 </menu>

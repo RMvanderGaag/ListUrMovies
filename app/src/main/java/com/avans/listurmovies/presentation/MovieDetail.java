@@ -1,7 +1,6 @@
 package com.avans.listurmovies.presentation;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
@@ -19,7 +18,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -31,7 +29,6 @@ import com.avans.listurmovies.dataacess.MovieRepository;
 import com.avans.listurmovies.domain.genre.Genre;
 import com.avans.listurmovies.domain.genre.GenreResults;
 import com.avans.listurmovies.domain.movie.Movie;
-import com.avans.listurmovies.domain.movie.Rating;
 import com.avans.listurmovies.domain.movie.Video;
 import com.bumptech.glide.Glide;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -49,13 +46,14 @@ public class MovieDetail extends AppCompatActivity {
     private ReviewViewModel mReviewViewModel;
     private MovieViewModel mMovieViewModel;
     private MovieRepository mMovieRepository = new MovieRepository(this);
-    Toast noMoreReviewsToast;
+    private Toast noMoreReviewsToast;
     private ReviewAdapter mAdapter;
+    private YouTubePlayerView mYouTubePlayerView;
+    private NestedScrollView mScrollView;
+    private LinearLayout mReviewRecyclerViewContainer;
+
     private int mCurrentPage = 1;
     private int mReviewsLastPage;
-    private YouTubePlayerView mYouTubePlayerView;
-    private NestedScrollView scrollView;
-    private LinearLayout reviewRecyclerViewContainer;
 
     private int mMovieId = 0;
     private String mMovieTitle;
@@ -71,11 +69,10 @@ public class MovieDetail extends AppCompatActivity {
         mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
-
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 
-        scrollView = findViewById(R.id.nested_scroll_view);
-        reviewRecyclerViewContainer = findViewById(R.id.review_recyclerview_container);
+        mScrollView = findViewById(R.id.nested_scroll_view);
+        mReviewRecyclerViewContainer = findViewById(R.id.review_recyclerview_container);
 
         TextView title = findViewById(R.id.movie_detail_name);
         TextView description = findViewById(R.id.movie_detail_description);
@@ -87,7 +84,6 @@ public class MovieDetail extends AppCompatActivity {
 
         //Get movie info
         Movie movie = (Movie) getIntent().getSerializableExtra("Movie");
-
 
         StringJoiner genres = new StringJoiner(" | ");
         genres.add(movie.getOriginal_language().toUpperCase(Locale.ROOT));
@@ -174,7 +170,7 @@ public class MovieDetail extends AppCompatActivity {
     }
 
     public void scrollToTopOfReviews() {
-        scrollView.scrollTo(0, reviewRecyclerViewContainer.getTop());
+        mScrollView.scrollTo(0, mReviewRecyclerViewContainer.getTop());
     }
 
     private void getMovieVideos() {

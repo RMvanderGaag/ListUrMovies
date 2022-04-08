@@ -13,18 +13,23 @@
         android:theme="@style/Theme.ListUrMovies">
         <activity
             android:name=".presentation.MovieAdd"
+            android:label="@string/add_movie"
             android:exported="false" />
         <activity
             android:name=".presentation.MovieListAdd"
+            android:label="@string/add_list"
             android:exported="false" />
         <activity
             android:name=".presentation.MovieListDetail"
+            android:label="@string/list_details"
             android:exported="false" />
         <activity
             android:name=".presentation.MovieListOverview"
+            android:label="@string/list"
             android:exported="false" />
         <activity
             android:name=".presentation.LoginPage"
+            android:label="@string/login"
             android:exported="true"
             android:noHistory="true">
             <intent-filter>
@@ -35,6 +40,7 @@
         </activity>
         <activity
             android:name=".presentation.MovieDetail"
+            android:label="@string/movie_details"
             android:exported="false" />
         <activity
             android:name=".presentation.MovieOverview"

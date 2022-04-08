@@ -2,30 +2,31 @@ package com.avans.listurmovies;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 
 import com.avans.listurmovies.businesslogic.validation.ValidationTools;
 
-public class LoginUnitTest {
+import org.junit.Test;
+
+public class MovieListAddUnitTest {
     private final ValidationTools mValidationTools = new ValidationTools();
 
     @Test
-    public void usernameFieldValidator_NotEmptyInputField_ReturnsFalse() {
+    public void nameFieldValidator_NotEmptyInputField_ReturnsFalse() {
         assertFalse(mValidationTools.isInputFieldEmpty("LoremIpsum"));
     }
 
     @Test
-    public void usernameFieldValidator_EmptyInputField_ReturnsTrue() {
+    public void nameFieldValidator_EmptyInputField_ReturnsTrue() {
         assertTrue(mValidationTools.isInputFieldEmpty(""));
     }
 
     @Test
-    public void passwordFieldValidator_NotEmptyInputField_ReturnsFalse() {
-        assertFalse(mValidationTools.isInputFieldEmpty("LoremIpsum"));
+    public void descriptionFieldValidator_NotEmptyInputField_ReturnsFalse() {
+        assertFalse(mValidationTools.isInputFieldEmpty("LoremIpsumDolorSitAmet"));
     }
 
     @Test
-    public void passwordFieldValidator_EmptyInputField_ReturnsTrue() {
+    public void descriptionFieldValidator_EmptyInputField_ReturnsTrue() {
         assertTrue(mValidationTools.isInputFieldEmpty(""));
     }
 }

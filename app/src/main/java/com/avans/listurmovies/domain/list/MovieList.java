@@ -1,38 +1,20 @@
 package com.avans.listurmovies.domain.list;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import com.avans.listurmovies.domain.movie.Movie;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
-@Entity(tableName = "movielist")
 public class MovieList implements Serializable {
-
     private String created_by;
-
     private String description;
-
     private int favorite_count;
 
-    @PrimaryKey
     private String id;
-
-
-    private ArrayList<Movie> items = new ArrayList<>();
-
+    private ArrayList<Movie> items;
     private int item_count;
-
-
     private String iso_639_1;
-
-
     private String name;
-
-
     private String poster_path;
 
     public MovieList(String created_by, String description, int favorite_count, String id, ArrayList<Movie> items, int item_count, String iso_639_1, String name, String poster_path) {

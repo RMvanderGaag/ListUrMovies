@@ -21,6 +21,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     private final LayoutInflater mInflater;
     private List<Review> mReviews;
     private Context mContext;
+
     SimpleDateFormat mDateFormat = new SimpleDateFormat("dd MMM yyyy");
 
     public ReviewAdapter(Context context) {
@@ -53,44 +54,40 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         else return 0;
     }
 
-    class ReviewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private ImageView authorImage;
-        private TextView authorName;
-        private TextView lastUpdatedReview;
-        private TextView rating;
-        private TextView content;
+    class ReviewViewHolder extends RecyclerView.ViewHolder {
+        private ImageView mAuthorImage;
+        private TextView mAuthorName;
+        private TextView mLastUpdatedReview;
+        private TextView mRating;
+        private TextView mContent;
 
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
-            authorImage = itemView.findViewById(R.id.author_image);
-            authorName = itemView.findViewById(R.id.author_name);
-            lastUpdatedReview = itemView.findViewById(R.id.last_updated_review);
-            rating = itemView.findViewById(R.id.author_rating);
-            content = itemView.findViewById(R.id.review_content);
+            mAuthorImage = itemView.findViewById(R.id.author_image);
+            mAuthorName = itemView.findViewById(R.id.author_name);
+            mLastUpdatedReview = itemView.findViewById(R.id.last_updated_review);
+            mRating = itemView.findViewById(R.id.author_rating);
+            mContent = itemView.findViewById(R.id.review_content);
         }
 
         public void bindTo(Review currentReview) {
             //Author image
             String author_image = currentReview.getAuthor().getAvatar_path();
             if(author_image != null) {
+                //Author image
                 Glide.with(mContext).load(author_image.substring(1))
-                        .placeholder(R.drawable.img_placeholder).error(R.drawable.img_placeholder).into(authorImage);
+                        .placeholder(R.drawable.img_placeholder).error(R.drawable.img_placeholder).into(mAuthorImage);
                 //Author name
-                authorName.setText(currentReview.getAuthor().getUsername());
+                mAuthorName.setText(currentReview.getAuthor().getUsername());
                 //Last updated review
-                lastUpdatedReview.setText(mDateFormat.format(currentReview.getUpdatedAt()));
+                mLastUpdatedReview.setText(mDateFormat.format(currentReview.getUpdatedAt()));
                 //Rating
                 if(currentReview.getAuthor().getRating() != 0.00) {
-                    rating.setText("\u2605 " + currentReview.getAuthor().getRating());
+                    mRating.setText("\u2605 " + currentReview.getAuthor().getRating());
                 }
                 //Review contet;
-                content.setText(currentReview.getContent());
+                mContent.setText(currentReview.getContent());
             }
-        }
-
-        @Override
-        public void onClick(View view) {
-
         }
     }
 }

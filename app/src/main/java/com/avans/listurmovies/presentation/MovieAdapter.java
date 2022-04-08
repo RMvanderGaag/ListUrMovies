@@ -25,7 +25,6 @@ import java.util.StringJoiner;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private final LayoutInflater mInflater;
     private List<Movie> mMovies;
-    private List<Genre> mGenres;
     private Context mContext;
 
     public MovieAdapter(Context context) {
@@ -50,12 +49,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         notifyDataSetChanged();
     }
 
-    void setGenres(List<Genre> genres){
-        mGenres = genres;
-    }
-
-    // getItemCount() is called many times, and when it is first called,
-    // mWords has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
         if (mMovies != null)
@@ -87,7 +80,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             mMovieRating.setText("\u2605 " + currentMovie.getVote_average());
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onClick(View view){
             Movie currentMovie = mMovies.get(getAdapterPosition());

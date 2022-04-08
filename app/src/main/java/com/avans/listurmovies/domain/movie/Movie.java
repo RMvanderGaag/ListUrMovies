@@ -1,17 +1,12 @@
 package com.avans.listurmovies.domain.movie;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity(tableName = "movies")
 public class Movie implements Serializable {
     //General
-    @PrimaryKey
     private int id;
     private String title;
     private String overview;

@@ -11,8 +11,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.avans.listurmovies.R;
 import com.avans.listurmovies.dataacess.retrofit.MovieAPI;
 import com.avans.listurmovies.dataacess.retrofit.RetrofitClient;
-import com.avans.listurmovies.dataacess.room.MovieDAO;
-import com.avans.listurmovies.dataacess.room.MovieRoomDatabase;
 import com.avans.listurmovies.domain.genre.GenreResults;
 import com.avans.listurmovies.domain.movie.Movie;
 import com.avans.listurmovies.domain.movie.MovieResults;
@@ -29,7 +27,6 @@ import retrofit2.Response;
 public class MovieRepository {
     private final MovieAPI mService;
     private Context mContext;
-    private MovieDAO mMovieDAO;
     private MutableLiveData<VideoResult> mVideo = new MutableLiveData<>();
 
     private final MutableLiveData<MovieResults> listOfMovies = new MutableLiveData<>();
@@ -40,29 +37,6 @@ public class MovieRepository {
     public MovieRepository(Context context) {
         this.mService = RetrofitClient.getInstance().getmRepository();
         this.mContext = context;
-
-        MovieRoomDatabase db = MovieRoomDatabase.getDatabase(context);
-        mMovieDAO = db.movieDAO();;
-    }
-
-
-    public void insert (Movie movie) {
-        new insertAsyncTask(mMovieDAO).execute(movie);
-    }
-
-    private static class insertAsyncTask extends AsyncTask<Movie, Void, Void> {
-
-        private MovieDAO mAsyncTaskDao;
-
-        insertAsyncTask(MovieDAO dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final Movie... params) {
-            mAsyncTaskDao.insert(params[0]);
-            return null;
-        }
     }
 
     public MutableLiveData<MovieResults> getPopularMovies(int page) {
@@ -141,7 +115,7 @@ public class MovieRepository {
     }
 
     public MutableLiveData<VideoResult> getMovieVideos(int movieId) {
-        Call<VideoResult> call = mService.getTrailer(movieId, mContext.getResources().getString(R.string.api_key), LANGUAGE);
+        Call<VideoResult> call = mService.getTrailer(movieId, mContext.getResources().getString(R.string.api_key));
 
         call.enqueue(new Callback<VideoResult>() {
             @Override
@@ -166,20 +140,23 @@ public class MovieRepository {
     }
 
     public void rateMovie(int movie_id, String rating) {
+        Toast notLoggedInToast = Toast.makeText(mContext, R.string.login_first, Toast.LENGTH_LONG);
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(UserRepository.SHARED_PREFS, Context.MODE_PRIVATE);
         String session_id = sharedPreferences.getString(UserRepository.SESSION_ID, "");
 
         Rating body = new Rating(Double.parseDouble(rating));
 
+        //If user is not logged in
         if(session_id.equals("")) {
             Log.d(MovieRepository.class.getSimpleName(), "User is not logged in");
+            notLoggedInToast.show();
             return;
         }
 
-        //Retrofit rate movie
+        //Rate the movie
         Call<RatingResponse> call = mService.postRating(movie_id, mContext.getResources().getString(R.string.api_key), session_id, body);
-        Toast postErrorToast = Toast.makeText(mContext, "Something went wrong, try again later", Toast.LENGTH_LONG);
-        Toast postSuccesToast = Toast.makeText(mContext, "Successfully rated the movie", Toast.LENGTH_LONG);
+        Toast postErrorToast = Toast.makeText(mContext, R.string.something_went_wrong, Toast.LENGTH_LONG);
+        Toast postSuccesToast = Toast.makeText(mContext, R.string.successfully_rated_movie, Toast.LENGTH_LONG);
 
         call.enqueue(new Callback<RatingResponse>() {
             @Override
